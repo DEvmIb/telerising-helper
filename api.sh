@@ -466,6 +466,7 @@ case $_system in
 	x86-64_windows)
 		# no libs on windows
 		:
+	;;
 	*)
 		echo "$_system" not supported
 		exit 1
