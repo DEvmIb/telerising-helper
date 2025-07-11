@@ -186,6 +186,18 @@ echo "#                                                                         
 echo "###########################################################################"
 echo
 
+# register ctrl + c
+trap end SIGINT
+_trap=0
+function end {
+	# cygwin needs to kill the task
+	if [ "$_os" == "cygwin" ] && [ $_trap -eq 0 ]
+	then
+		taskkill /f /im $_api
+	fi
+	_trap=1
+}
+
 if [[ -t 1 ]]
 then
 	_auto=0
@@ -237,8 +249,14 @@ then
 	echo -n "detecting system: "
 	case $(uname -m) in
 		x86_64|amd64)
-			echo using linux $(uname -m)
-			_system=x86-64_linux
+			if [ "$_os" == "cygwin" ]
+			then
+				>&2 echo using windows build on cygwin $(uname -m)
+				_system=x86-64_windows
+			else
+				>&2 echo using linux $(uname -m)
+				_system=x86-64_linux
+			fi
 		;;
 		armv6l|armv7l)
 			echo using armhf_raspbian $(uname -m)
@@ -400,8 +418,12 @@ echo
 _r=$(grep "^127.0.0.1 $(host_name)" /etc/hosts)
 if [ "$_r" == "" ]
 then
-	echo "setting hostname in /etc/hosts"
-	echo 127.0.0.1 $(host_name) >> /etc/hosts
+	>&2 echo "setting hostname in /etc/hosts"
+	>&2 echo 127.0.0.1 $(host_name) >> /etc/hosts &>/dev/null
+	if [ $? -ne 0 ]
+	then
+		>&2 echo failed setting /etc/hosts
+	fi
 fi
 
 # zone data
@@ -548,7 +570,11 @@ if [ "$_os" == "cygwin" ]
 then
 	# fixing perm when giving to windows kernel
 	chmod -R 777 "$_install_path"
-	./$_api
+	./$_api &
+	while [ $_trap -eq 1 ]
+	do
+		sleep 5
+	done
 elif [ $(su -m telerising-script -c "ls $_install_path" 2>/dev/null|wc -l) -ne 0 ]
 then
 	echo su found
