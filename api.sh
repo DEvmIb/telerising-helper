@@ -419,9 +419,10 @@ _r=$(grep "^127.0.0.1 $(host_name)" /etc/hosts)
 if [ "$_r" == "" ]
 then
 	>&2 echo "setting hostname in /etc/hosts"
-	>&2 echo 127.0.0.1 $(host_name) >> /etc/hosts &>/dev/null
+	echo 127.0.0.1 $(host_name) >> /etc/hosts &>/dev/null
 	if [ $? -ne 0 ]
 	then
+		# will fail on cygwin todo: removing the sym and create hosts?
 		>&2 echo failed setting /etc/hosts
 	fi
 fi
@@ -571,7 +572,7 @@ then
 	# fixing perm when giving to windows kernel
 	chmod -R 777 "$_install_path"
 	./$_api &
-	while [ $_trap -eq 1 ]
+	while [ $_trap -eq 0 ]
 	do
 		sleep 5
 	done
