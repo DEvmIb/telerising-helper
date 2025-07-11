@@ -479,8 +479,8 @@ esac
 chmod +x ld-linux-x86-64.so.2 2>/dev/null
 chmod +x ld-linux-aarch64.so.1 2>/dev/null
 chmod +x ld-linux-armhf.so.3 2>/dev/null
-chmod +x api.sh
-chmod +x $_api
+chmod +x api.sh 2>/dev/null
+chmod +x $_api 2>/dev/null
 
 
 # add user
@@ -546,6 +546,8 @@ esac
 
 if [ "$_os" == "cygwin" ]
 then
+	# fixing perm when giving to windows kernel
+	chmod -R 777 "$_install_path"
 	./$_api
 elif [ $(su -m telerising-script -c "ls $_install_path" 2>/dev/null|wc -l) -ne 0 ]
 then
