@@ -463,6 +463,9 @@ case $_system in
 		if [ ! -e libstdc++.so.6 ]; then dl libstdc++.so.6 "$_system"; fi
 		# freebsd need to test
 	;;
+	x86-64_windows)
+		# no libs on windows
+		:
 	*)
 		echo "$_system" not supported
 		exit 1
