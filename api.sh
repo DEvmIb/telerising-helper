@@ -530,6 +530,12 @@ case $_system in
 	x86-64_linux)
 		_bin=ld-linux-x86-64.so.2
 	;;
+	x86-64_windows)
+		if [ ! "$_os" == "cygwin" ]
+		then
+			echo "$_system" not supported
+			exit
+		fi
 	*)
 		echo "$_system" not supported
 		exit 1
