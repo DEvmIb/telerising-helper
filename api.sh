@@ -159,7 +159,7 @@ function update {
 	# cleanup old telerising
 	while read -r _del
 	do
-		if [[ "${_del,,}" == *"provider."* ]]; then continue; fi
+		if [[ "${_del,,}" == *"providers."* ]]; then continue; fi
 		if [ "${_del,,}" == "cookie_files" ]; then continue; fi
 		if [ "${_del,,}" == "settings.json" ]; then continue; fi
 		if [ "${_del,,}" == "tmp" ]; then continue; fi
