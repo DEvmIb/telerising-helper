@@ -536,6 +536,7 @@ case $_system in
 			echo "$_system" not supported
 			exit
 		fi
+	;;
 	*)
 		echo "$_system" not supported
 		exit 1
