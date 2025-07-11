@@ -194,7 +194,7 @@ else
 fi
 
 # perms check
-if [ $(id -u) -ne 0 ] && [ "$_os" == "cygwin" ]; then echo we need root sorry.; exit 1; fi
+if [ $(id -u) -ne 0 ] && [ ! "$_os" == "cygwin" ]; then echo we need root sorry.; exit 1; fi
 
 if [ "${_kernel,,}" == "freebsd" ]
 then
