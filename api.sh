@@ -191,11 +191,17 @@ trap end SIGINT
 _trap=0
 function end {
 	# cygwin needs to kill the task
+	if [ $_trap -eq 0 ]; then >&2 echo killing processes; fi
 	if [ "$_os" == "cygwin" ] && [ $_trap -eq 0 ]
 	then
 		taskkill /f /im $_api
 	fi
+	for _kill in ld-linux-x86-64.so.2 ld-linux-armhf.so.3 ld-linux-aarch64.so.1
+	do
+		kill $(pidof $_kill) &>/dev/null
+	done
 	_trap=1
+	exit 1
 }
 
 if [[ -t 1 ]]
