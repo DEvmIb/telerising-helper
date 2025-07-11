@@ -5,15 +5,21 @@
 # freebsd: libz.so.1
 # freebsd: check if fbsd has v6 v7 v8 and add libs
 # using static busybox for all the commands? lets see if a user comes in and cant install any needed foo on his system.
+# cygwin test system dl win
+# ctrl+c not killing tr
 _mirror=https://raw.githubusercontent.com/DEvmIb/telerising-helper/refs/heads/main
 _sub=
 _install_path=$1
 _system=$(echo $2)
 _os=$(uname -o)
 _kernel=$(uname -s)
+_machine=$(uname -m)
 
 _os=${_os,,}
 _kernel=${_kernel,,}
+_machine=${_machine,,}
+
+_api=api
 
 if [ "$1" == "" ]
 then
@@ -41,6 +47,7 @@ then
 	echo "#      - arm64_raspbian | arm64 devices                                                            #"
 	echo "#      - x86-64_linux   | amd64 devices                                                            #"
 	echo "#      - armhf_raspbian | armhf devices                                                            #"
+	echo "#      - x86-64_windows | windows 64bit                                                            #"
 	echo "#                                                                                                  #"
 	echo "# other:                                                                                           #"
 	echo "#    - install modified providers.json for waipu support                                           #"
@@ -105,19 +112,14 @@ function dl {
 }
 
 function update {
-	local _latest _ver _file _api _api_path _del
-	#if ! hash unzip 2>/dev/null; then >&2 echo missing unzip, please install; exit 1; fi
-	#dl telerising_$_system-latest.zip
-        #>&2 echo extracting..
-        #unzip -o telerising_$_system-latest.zip > unzip.log 2>&1
-        #if [ $? -ne 0 ]; then >&2 echo error extract. see unzip.log; rm -f telerising_$_system-latest.zip; exit 1; fi
-        #rm -f telerising_$_system-latest.zip
-        #cp -R telerising/* .
-        #rm -r telerising
+	local _latest _ver _file _api_search _api_path _del
+	if ! hash unzip 2>/dev/null; then >&2 echo missing unzip, please install; exit 1; fi
 	_latest=$(curl -s https://api.github.com/repos/sunsettrack4/telerising-api/releases/latest)
 	if [[ ! "$_latest" =~ /releases/download/v([.0-9]+)/telerising-v[.0-9]+_$_system\.zip ]]
 	then
-		if [ ! -e "$_install_path/api" ]; then >&2 echo failed getting current version; exit 1; fi
+		if [ ! -e "$_install_path/$_api" ]; then >&2 echo failed getting current version; exit 1; fi
+		>&2 echo update check failed
+		return
 	fi
 	_ver=${BASH_REMATCH[1]}
 	_file=telerising-v${_ver}_$_system.zip
@@ -135,19 +137,23 @@ function update {
 	then
 		>&2 echo error extract.
 		rm -f $_file
-		if [ ! -e "$_install_path/api" ]; then >&2 echo failed getting current version; exit 1; fi
+		if [ ! -e "$_install_path/$_api" ]; then >&2 echo failed getting current version; exit 1; fi
+		return
 	fi
-	_api=$(find tmp -name api)
-	if [ "$_api" == "" ]
+	_api_search=$(find tmp -name $_api)
+	if [ "$_api_search" == "" ]
 	then
 		>&2 echo missing api after extract
-		if [ ! -e "$_install_path/api" ]; then >&2 echo failed getting current version; exit 1; fi
+		rm -fr tmp
+		if [ ! -e "$_install_path/$_api" ]; then >&2 echo failed getting current version; exit 1; fi
+		return
 	fi
-	_api_path=$(dirname "$_api")
+	_api_path=$(dirname "$_api_search")
 	if [ "$_api_path" == "" ]
 	then
 		>&2 echo missing api path after extract
-		if [ ! -e "$_install_path/api" ]; then >&2 echo failed getting current version; exit 1; fi
+		rm -rf tmp
+		if [ ! -e "$_install_path/$_api" ]; then >&2 echo failed getting current version; exit 1; fi
 	fi
 	mv "$_api_path/app/static/json/providers.json" providers.json.contrib
 	# cleanup old telerising
@@ -156,6 +162,7 @@ function update {
 		if [[ "${_del,,}" == *"provider."* ]]; then continue; fi
 		if [ "${_del,,}" == "cookie_files" ]; then continue; fi
 		if [ "${_del,,}" == "settings.json" ]; then continue; fi
+		if [ "${_del,,}" == "tmp" ]; then continue; fi
 		rm -fr $_del
 	done < <(ls)
 	cp -r "$_api_path/"* .
@@ -187,13 +194,18 @@ else
 fi
 
 # perms check
-if [ $(id -u) -ne 0 ] && [[ ! "$_os" == *"cygwin"* ]]; then echo we need root sorry.; exit 1; fi
+if [ $(id -u) -ne 0 ] && [ "$_os" == "cygwin" ]; then echo we need root sorry.; exit 1; fi
 
 if [ "${_kernel,,}" == "freebsd" ]
 then
 	if [[ ! "$(sysrc linux_enable)" == *": YES"* ]]
 	then
-		echo -n "on FreeBSD we need ABI, enable it now? N/y: "
+		if [ $_auto -eq 1 ]
+		then
+			>&2 echo -n "please enable linux ABI before running unattended"
+			exit 1
+		fi
+		>&2 echo -n "on FreeBSD we need ABI, enable it now? N/y: "
 		read -u2 -n1 _install
 		if [ "${_install,,}" == "y" ]
 		then
@@ -208,8 +220,16 @@ then
 fi
 
 # cd into install folder
+
+# some test to make sure we not destroy users system with wrong paths
+
+if [ "$_install_path" == "/" ]; then >&2 echo choose other folder to install not root; exit 1; fi
+if [[ "$_install_path" == *"/tmp/"* ]]; then >&2 echo warning if you install into tmp you telerising settings may be deleted on next reboot; sleep 2; fi
+
+
 mkdir -p "$_install_path"
 if [ $? -ne 0 ]; then echo error creating telerising folder.; exit 1; fi
+if [ ! -d "$_install_path" ]; then echo error creating telerising folder.; exit 1; fi
 cd "$_install_path"
 
 if [ "$_system" == "" ]
@@ -233,6 +253,18 @@ then
 			exit 1
 		;;
 	esac
+fi
+
+# cygwin use windows build
+if [ "$_os" == "cygwin" ]
+then
+	if [ ! "$_machine" == "x86_64" ]
+	then
+		>&2 echo cygwin is only supported on x86_64
+		exit 1
+	fi
+	_system=x86-64_windows
+	_api=api.exe
 fi
 
 # package systems
@@ -300,7 +332,7 @@ else
 fi
 
 # is there anybody out there?
-if [ ! -f api ]
+if [ ! -f $_api ]
 then
 	echo
 	echo -n "missing telerising. install it? (y/N): "
@@ -444,7 +476,7 @@ chmod +x ld-linux-x86-64.so.2 2>/dev/null
 chmod +x ld-linux-aarch64.so.1 2>/dev/null
 chmod +x ld-linux-armhf.so.3 2>/dev/null
 chmod +x api.sh
-chmod +x api
+chmod +x $_api
 
 
 # add user
@@ -501,25 +533,28 @@ case $_system in
 esac
 
 
-if [ $(su -m telerising-script -c "ls $_install_path" 2>/dev/null|wc -l) -ne 0 ]
+if [ "$_os" == "cygwin" ]
+then
+	./$_api
+elif [ $(su -m telerising-script -c "ls $_install_path" 2>/dev/null|wc -l) -ne 0 ]
 then
 	echo su found
-	su -m telerising-script -c "./$_bin ./api"
+	su -m telerising-script -c "./$_bin ./$_api"
 elif [ $(su -s /bin/sh telerising-script -c "ls $_install_path" 2>/dev/null|wc -l) -ne 0 ]
 then
 	echo su found
-	su -s /bin/sh telerising-script -c "./$_bin ./api"
+	su -s /bin/sh telerising-script -c "./$_bin ./$_api"
 elif [ $(su -s /bin/ls telerising-script "$_install_path" 2>/dev/null|wc -l) -ne 0 ]
 then
         echo su found
-        su -s ./$_bin telerising-script ./api
+        su -s ./$_bin telerising-script ./$_api
 elif [ $(sudo -u telerising-script ls "$_install_path" 2>/dev/null|wc -l) -ne 0 ]
 then
         echo sudo found
-        sudo -u telerising-script bash -c "cd '$_install_apth'; ./$_bin ./api"
+        sudo -u telerising-script bash -c "cd '$_install_apth'; ./$_bin ./$_api"
 else
         echo cannot start as telerising user. running telerising as root
-        ./$_bin ./api
+        ./$_bin ./$_api
 fi
 
 
