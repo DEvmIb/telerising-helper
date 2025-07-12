@@ -21,6 +21,32 @@ _machine=${_machine,,}
 
 _api=api
 
+if [ "$1" == "-d" ] || [ "$1" == "--devices" ]
+then
+	echo "####################################################################################################"
+	echo "#                                                                                                  #"
+	echo "#                                     tested devices                                               #"
+	echo "#                                                                                                  #"
+	echo "#      * Windows 10 / 11                                                                           #"
+	echo "#        - wls1     | debian, ubuntu                                                               #"
+	echo "#        - wls2     | debian, ubuntu                                                               #"
+	echo "#        - cygwin   | 64bit                                                                        #"
+	echo "#                                                                                                  #"
+	echo "#      * Android                                                                                   #"
+	echo "#        - termux   | armv7l, armv8l, aarch64 | using proot                                        #"
+	echo "#                                                                                                  #"
+	echo "#      * Linux                                                                                     #"
+	echo "#        - freebsd  | x86_64 | needs ABI | script will ask to enable it                            #"
+	echo "#        - opensuse | x86_64 | leap, tumbleweed                                                    #"
+	echo "#        - debian   | armv7l, armv8l, aarch64, x86_64                                              #"
+	echo "#        - ubuntu   | armv7l, armv8l, aarch64, x86_64                                              #"
+	echo "#        - RPI      | armv6l, armv7l, armv8l, aarch64, x86_64                                      #"
+	echo "#        - alpine   | armv6l, armv7l, armv8l, aarch64, x86_64                                      #"
+	echo "#        - fedora   | x86_64                                                                       #"
+	echo "#                                                                                                  #"
+	echo "####################################################################################################"
+fi
+
 if [ "$1" == "-h" ] || [ "$1" == "--help" ]
 then
 	echo "####################################################################################################"
@@ -430,7 +456,7 @@ else
 fi
 
 echo
-echo -n "install modified providers.json for waipu support? skipping in 10s. (y/N): "
+echo -n "install modified providers.json for waipu support? skipping in 5s. (y/N): "
 if [ $_auto -eq 1 ]
 then
 	# docker auto
