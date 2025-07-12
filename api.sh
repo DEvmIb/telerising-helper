@@ -543,7 +543,7 @@ then
 	done
 fi
 
-if [ ! "$(id telerising-script 2>/dev/null)" == "" ]; then chown -R telerising-script:telerising-script "$_install_path"; fi
+if [ ! "$(id telerising-script 2>/dev/null)" == "" ]; then chown -R telerising-script "$_install_path"; fi
 
 # finish
 echo
