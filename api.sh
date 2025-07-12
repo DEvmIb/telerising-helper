@@ -247,7 +247,7 @@ then
 elif [ "$_os" == "termux" ]
 then
 	# termux no root
-	>&2 echo runing under termux
+	>&2 echo running under termux
 elif [ $(id -u) -ne 0 ]
 then
 	echo we need root sorry.
@@ -304,7 +304,8 @@ then
 				_system=x86-64_linux
 			fi
 		;;
-		armv6l|armv7l)
+		# v8l is 32bit in 64bit
+		armv6l|armv7l|armv8l)
 			echo using armhf_raspbian $(uname -m)
 			_system=armhf_raspbian
 		;;
