@@ -234,7 +234,20 @@ else
 fi
 
 # perms check
-if [ $(id -u) -ne 0 ] && [ ! "$_os" == "cygwin" ]; then echo we need root sorry.; exit 1; fi
+
+if [ "$_os" == "cygwin" ]
+then
+	# cygwin no root needed
+	>&2 echo running under cygwin
+elif [[ "$(export)" =~ com\.termux ]]
+then
+	# termux no root
+	>&2 echo runing under termux
+elif [ $(id -u) -ne 0 ]
+then
+	echo we need root sorry.
+	exit 1
+fi
 
 if [ "${_kernel,,}" == "freebsd" ]
 then
@@ -444,7 +457,7 @@ fi
 # hostname check
 echo
 _r=$(grep "^127.0.0.1 $(host_name)" /etc/hosts)
-if [ "$_r" == "" ]
+if [ "$_r" == "" ] && [[ ! "$(export)" =~ com\.termux ]]
 then
 	>&2 echo "setting hostname in /etc/hosts"
 	echo 127.0.0.1 $(host_name) >> /etc/hosts &>/dev/null
@@ -457,7 +470,8 @@ fi
 
 # zone data
 echo
-if [ ! -e /usr/share/zoneinfo/tzdata.zi ]
+						# skip on termux.
+if [ ! -e /usr/share/zoneinfo/tzdata.zi ] && [[ ! "$(export)" =~ com\.termux ]]
 then
 	echo "installing tzdata: tzdata.zi"
 	rm -f zoneinfo.tar.gz
@@ -467,7 +481,7 @@ then
 	cp tzdata.zi /usr/share/zoneinfo/
 fi
 
-if [ ! -e /usr/share/zoneinfo/zone1970.tab ]
+if [ ! -e /usr/share/zoneinfo/zone1970.tab ] && [[ ! "$(export)" =~ com\.termux ]]
 then
 	echo "installing tzdata: zone1970.tab"
 	mkdir -p /usr/share/zoneinfo
@@ -488,6 +502,8 @@ case $_system in
 		# support alpine
 		if [ ! -e libstdc++.so.6 ]; then dl libstdc++.so.6 "$_system"; fi
 		# freebsd .. need to test
+		# freebsd $(uname -o) FreeBSD, termux
+                if [ ! -e libz.so.1 ]; then dl libz.so.1 "$_system"; fi
 	;;
 	x86-64_linux)
 		if [ ! -e ld-linux-x86-64.so.2 ]; then dl ld-linux-x86-64.so.2 "$_system"; fi
@@ -497,7 +513,7 @@ case $_system in
 		# support alpine
 		if [ ! -e libpthread.so.0 ]; then dl libpthread.so.0 "$_system"; fi
 		if [ ! -e libstdc++.so.6 ]; then dl libstdc++.so.6 "$_system"; fi
-		# freebsd $(uname -o) FreeBSD
+		# freebsd $(uname -o) FreeBSD, termux
 		if [ ! -e libz.so.1 ]; then dl libz.so.1 "$_system"; fi
 	;;
 	armhf_raspbian)
@@ -512,7 +528,8 @@ case $_system in
 		# support alpine
 		if [ ! -e libpthread.so.0 ]; then dl libpthread.so.0 "$_system"; fi
 		if [ ! -e libstdc++.so.6 ]; then dl libstdc++.so.6 "$_system"; fi
-		# freebsd need to test
+		# freebsd need to test, termux
+		if [ ! -e libz.so.1 ]; then dl libz.so.1 "$_system"; fi
 	;;
 	x86-64_windows)
 		# no libs on windows
@@ -548,7 +565,7 @@ then
 	useradd -d "$_install_path" -s /bin/false telerising-script &>/dev/null
 fi
 
-if [ "$(id telerising-script 2>/dev/null)" == "" ] && [ -e /etc/passwd ] && [ -e /etc/group ]
+if [ "$(id telerising-script 2>/dev/null)" == "" ] && [ -e /etc/passwd ] && [ -e /etc/group ] && [[ ! "$(export)" =~ com\.termux ]]
 then
 	for _id in {1000..2000}
 	do
