@@ -198,7 +198,22 @@ function end {
 	fi
 	for _kill in ld-linux-x86-64.so.2 ld-linux-armhf.so.3 ld-linux-aarch64.so.1
 	do
-		kill $(pidof $_kill) &>/dev/null
+		# try all ways without check if any app exists
+		if hash kill pgrep &>/dev/null
+		then
+			kill $(pgrep -f $_kill 2>/dev/null) &>/dev/null
+		elif hash kill pidof &>/dev/null
+		then
+			kill $(pidof $_kill 2>/dev/null) &>/dev/null
+		elif hash killall &>/dev/null
+		then
+			killall $_kill &>/dev/null
+		elif hash pkill &>/dev/null
+		then
+			pkill -f $_kill &>/dev/null
+		else
+			# find in proc
+			
 	done
 	_trap=1
 	exit 1
@@ -297,7 +312,7 @@ if hash zypper &>/dev/null
 then
 	# suse
 	echo found zypper
-	for _pkg in timezone curl wget su sudo unzip
+	for _pkg in timezone curl wget su sudo unzip psmisc
 	do
 		echo -en "\t -$_pkg: "
 		if hash $_pkg &>/dev/null; then echo ok; continue; fi
@@ -577,6 +592,7 @@ if [ "$_os" == "cygwin" ]
 then
 	# fixing perm when giving to windows kernel
 	chmod -R 777 "$_install_path"
+
 	./$_api &
 	while [ $_trap -eq 0 ]
 	do
@@ -585,22 +601,22 @@ then
 elif [ $(su -m telerising-script -c "ls $_install_path" 2>/dev/null|wc -l) -ne 0 ]
 then
 	echo su found
-	su -m telerising-script -c "./$_bin ./$_api"
+	>&2 su -m telerising-script -c "./$_bin ./$_api"
 elif [ $(su -s /bin/sh telerising-script -c "ls $_install_path" 2>/dev/null|wc -l) -ne 0 ]
 then
 	echo su found
-	su -s /bin/sh telerising-script -c "./$_bin ./$_api"
+	>&2 su -s /bin/sh telerising-script -c "./$_bin ./$_api"
 elif [ $(su -s /bin/ls telerising-script "$_install_path" 2>/dev/null|wc -l) -ne 0 ]
 then
         echo su found
-        su -s ./$_bin telerising-script ./$_api
+        >&2 su -s ./$_bin telerising-script ./$_api
 elif [ $(sudo -u telerising-script ls "$_install_path" 2>/dev/null|wc -l) -ne 0 ]
 then
         echo sudo found
-        sudo -u telerising-script bash -c "cd '$_install_apth'; ./$_bin ./$_api"
+        >&2 sudo -u telerising-script bash -c "cd '$_install_path'; ./$_bin ./$_api"
 else
         echo cannot start as telerising user. running telerising as root
-        ./$_bin ./$_api
+        >&2 ./$_bin ./$_api
 fi
 
 
