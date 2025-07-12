@@ -48,8 +48,10 @@ then
 	echo "#        - alpine       | armv6l, armv7l, armv8l, aarch64, x86_64                                  #"
 	echo "#        - fedora       | aarch64, x86_64                                                          #"
 	echo "#        - rocky        | aarch64, x86_64                                                          #"
+	echo "#        - oracle       | aarch64, x86_64                                                          #"
 	echo "#                                                                                                  #"
 	echo "####################################################################################################"
+	exit 0
 fi
 
 if [ "$1" == "-h" ] || [ "$1" == "--help" ]
@@ -93,7 +95,7 @@ then
 	echo "# support on kodinerds https://www.kodinerds.net/wcf/user/32559-fds97avvs/                         #"
 	echo "#                                                                                                  #"
 	echo "####################################################################################################"
-	exit 1
+	exit 0
 fi
 
 function host_name {
