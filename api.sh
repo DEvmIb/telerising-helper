@@ -7,6 +7,8 @@
 # using static busybox for all the commands? lets see if a user comes in and cant install any needed foo on his system.
 # cygwin test system dl win
 # ctrl+c not killing tr
+# when ~ /root then not use /root. (perms)
+# all pkg no cache..
 _mirror=https://raw.githubusercontent.com/DEvmIb/telerising-helper/refs/heads/main
 _sub=
 _install_path=${1:-~/telerising}
@@ -28,21 +30,24 @@ then
 	echo "#                                     tested devices                                               #"
 	echo "#                                                                                                  #"
 	echo "#      * Windows 10 / 11                                                                           #"
-	echo "#        - wls1     | debian, ubuntu                                                               #"
-	echo "#        - wls2     | debian, ubuntu                                                               #"
-	echo "#        - cygwin   | 64bit                                                                        #"
+	echo "#        - wls1         | debian, ubuntu                                                           #"
+	echo "#        - wls2         | debian, ubuntu                                                           #"
+	echo "#        - cygwin       | 64bit                                                                    #"
 	echo "#                                                                                                  #"
 	echo "#      * Android                                                                                   #"
-	echo "#        - termux   | armv7l, armv8l, aarch64 | using proot                                        #"
+	echo "#        - termux       | armv7l, armv8l, aarch64 | using proot                                    #"
 	echo "#                                                                                                  #"
 	echo "#      * Linux                                                                                     #"
-	echo "#        - freebsd  | x86_64 | needs ABI | script will ask to enable it                            #"
-	echo "#        - opensuse | x86_64 | leap, tumbleweed                                                    #"
-	echo "#        - debian   | armv7l, armv8l, aarch64, x86_64                                              #"
-	echo "#        - ubuntu   | armv7l, armv8l, aarch64, x86_64                                              #"
-	echo "#        - RPI      | armv6l, armv7l, armv8l, aarch64, x86_64                                      #"
-	echo "#        - alpine   | armv6l, armv7l, armv8l, aarch64, x86_64                                      #"
-	echo "#        - fedora   | x86_64                                                                       #"
+	echo "#        - newenigma    | aarch64 | DM AIO Image / Gemini 4.2 Plugin / One/Two                     #"
+	echo "#        - terramaster  | x86_64 | TOS6                                                            #"
+	echo "#        - freebsd      | x86_64 | needs ABI | script will ask to enable it                        #"
+	echo "#        - opensuse     | x86_64 | leap, tumbleweed                                                #"
+	echo "#        - debian       | armv7l, armv8l, aarch64, x86_64                                          #"
+	echo "#        - ubuntu       | armv7l, armv8l, aarch64, x86_64                                          #"
+	echo "#        - RPI          | armv6l, armv7l, armv8l, aarch64, x86_64                                  #"
+	echo "#        - alpine       | armv6l, armv7l, armv8l, aarch64, x86_64                                  #"
+	echo "#        - fedora       | aarch64, x86_64                                                          #"
+	echo "#        - rocky        | aarch64, x86_64                                                          #"
 	echo "#                                                                                                  #"
 	echo "####################################################################################################"
 fi
@@ -419,6 +424,17 @@ then
 		pkg install -y $_pkg &>/dev/null
 		if [ $? -eq 0 ]; then echo ok; else echo fail; fi
 	done
+elif hash microdnf &>/dev/null
+then
+	# rocky
+	echo found microdnf.
+	for _pkg in tzdata curl wget su sudo unzip findutils
+	do
+		echo -en "\t -$_pkg: "
+		if hash $_pkg &>/dev/null; then echo ok; continue; fi
+		microdnf install -y $_pkg &>/dev/null
+		if [ $? -eq 0 ]; then echo ok; else echo fail; fi
+	done
 else
 	echo no supported package manager found.
 fi
@@ -649,7 +665,7 @@ then
 	if [ ! -e tzdata.zi ]; then dl tzdata.zi; fi
 	if [ ! -e zone1970.tab ]; then dl zone1970.tab; fi
 	cat /etc/hosts > hosts
-	echo "127.0.0.1 $(hostname)" >> hosts
+	echo "127.0.0.1 $(host_name)" >> hosts
 	unset LD_PRELOAD
 	proot --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc ./ld-* ./api
 elif [ "$_os" == "cygwin" ]
