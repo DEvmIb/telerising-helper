@@ -319,7 +319,7 @@ if hash zypper &>/dev/null
 then
 	# suse
 	echo found zypper
-	for _pkg in timezone curl wget su sudo unzip psmisc
+	for _pkg in timezone curl wget su sudo unzip psmisc find
 	do
 		echo -en "\t -$_pkg: "
 		if hash $_pkg &>/dev/null; then echo ok; continue; fi
@@ -381,24 +381,24 @@ fi
 if [ ! -f $_api ]
 then
 	echo
-	echo -n "missing telerising. install it? (y/N): "
+	echo -n "missing telerising. install it? auto install in 5s (Y/n): "
 	if [ $_auto -eq 1 ]
 	then
 		_install=y
 	else
-		read -n1 _install </dev/tty
+		read -n1 -t5 _install </dev/tty
 	fi
-	if [ ! "${_install,,}" == "y" ];then echo; echo "cancelled"; exit 0; fi
+	if [ "${_install,,}" == "n" ];then echo; echo "cancelled"; exit 0; fi
 	echo
 	update
 else
 	echo
-	echo -n "update telersing?. auto skipping in 10s. (y/N): "
+	echo -n "update telersing?. auto skipping in 5s. (y/N): "
         if [ $_auto -eq 1 ]
 	then
 		_install=y
 	else
-		read -n1 -t10 _install </dev/tty
+		read -n1 -t5 _install </dev/tty
 	fi
 	echo
         if [ "${_install,,}" == "y" ]
