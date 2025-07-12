@@ -624,6 +624,7 @@ then
 	if [ ! -e zone1970.tab ]; then dl zone1970.tab; fi
 	cat /etc/hosts > hosts
 	echo "127.0.0.1 $(hostname)" >> hosts
+	unset LD_PRELOAD
 	proot --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc ./ld-* ./api
 elif [ "$_os" == "cygwin" ]
 then
