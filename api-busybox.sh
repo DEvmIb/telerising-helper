@@ -144,7 +144,6 @@ function dl {
 
 function update {
 	local _latest _ver _file _api_search _api_path _del
-	if ! hash unzip 2>/dev/null; then >&2 echo missing unzip, please install; exit 1; fi
 	_latest=$(curl -s https://api.github.com/repos/sunsettrack4/telerising-api/releases/latest 2>/dev/null)
 	if [[ ! "$_latest" =~ /releases/download/v([.0-9]+)/telerising-v[.0-9]+_$_system\.zip ]]
 	then
@@ -171,7 +170,7 @@ function update {
 		if [ ! -e "$_install_path/$_api" ]; then >&2 echo failed getting current version; exit 1; fi
 		return
 	fi
-	_api_search=$(find tmp -name $_api)
+	_api_search=$(./bin/find tmp -name $_api)
 	if [ "$_api_search" == "" ]
 	then
 		>&2 echo missing api after extract
@@ -194,6 +193,9 @@ function update {
 		if [ "${_del,,}" == "cookie_files" ]; then continue; fi
 		if [ "${_del,,}" == "settings.json" ]; then continue; fi
 		if [ "${_del,,}" == "tmp" ]; then continue; fi
+		if [ "${_del,,}" == "bin" ]; then continue; fi
+		if [ "${_del,,}" == "tzdata.zi" ]; then continue; fi
+		if [ "${_del,,}" == "zone1970.tab" ]; then continue; fi
 		rm -fr $_del
 	done < <(ls)
 	cp -r "$_api_path/"* .
@@ -220,6 +222,7 @@ echo
 # register ctrl + c
 trap end SIGINT
 _trap=0
+
 function end {
 	# cygwin needs to kill the task
 	if [ $_trap -eq 0 ]; then >&2 echo killing processes; fi
@@ -227,32 +230,12 @@ function end {
 	then
 		taskkill /f /im $_api
 	fi
-	for _kill in ld-linux-x86-64.so.2 ld-linux-armhf.so.3 ld-linux-aarch64.so.1
+	for _kill in $(ls ld-*)
 	do
 		# try all ways without check if any app exists
-		if hash kill pgrep &>/dev/null
-		then
-			kill $(pgrep -f $_kill 2>/dev/null) &>/dev/null
-		elif hash kill pidof &>/dev/null
-		then
-			kill $(pidof $_kill 2>/dev/null) &>/dev/null
-		elif hash killall &>/dev/null
-		then
-			killall $_kill &>/dev/null
-		elif hash pkill &>/dev/null
-		then
-			pkill -f $_kill &>/dev/null
-		elif hash grep kill &>/dev/null
-		then
-			# find in proc
-			_r=$(grep ${_kill%%.*} /proc/*/status 2>/dev/null)
-			if [[ "$_r" =~ /proc/([0-9]+)/status: ]]
-			then
-				_pid=${BASH_REMATCH[1]}
-				kill $_pid
-			fi
-		fi
+		./bin/kill $(./bin/pgrep -f $_kill 2>/dev/null) &>/dev/null
 	done
+	./bin/deluser telerising-script &>/dev/null
 	_trap=1
 	exit 1
 }
@@ -271,19 +254,19 @@ fi
 
 # perms check
 
-if [ "$_os" == "cygwin" ]
-then
-	# cygwin no root needed
-	>&2 echo running under cygwin
-elif [ "$_os" == "termux" ]
-then
-	# termux no root
-	>&2 echo running under termux
-elif [ $(id -u) -ne 0 ]
-then
-	echo we need root sorry.
-	exit 1
-fi
+#if [ "$_os" == "cygwin" ]
+#then
+#	# cygwin no root needed
+#	>&2 echo running under cygwin
+#elif [ "$_os" == "termux" ]
+#then
+#	# termux no root
+#	>&2 echo running under termux
+#elif [ $(id -u) -ne 0 ]
+#then
+#	echo we need root sorry.
+#	exit 1
+#fi
 
 if [ "${_kernel,,}" == "freebsd" ]
 then
@@ -363,81 +346,34 @@ then
 	_api=api.exe
 fi
 
-# package systems
-echo
-if hash zypper &>/dev/null
-then
-	# suse
-	echo found zypper
-	for _pkg in timezone curl wget su sudo unzip psmisc find
-	do
-		echo -en "\t -$_pkg: "
-		if hash $_pkg &>/dev/null; then echo ok; continue; fi
-		zypper install -y $_pkg &>/dev/null
-		if [ $? -eq 0 ]; then echo ok; else echo fail; fi
-	done
-elif hash yum &>/dev/null
-then
-	# fedora centos ..
-	echo found yum.
-	for _pkg in tzdata curl wget su sudo unzip
-	do
-		echo -en "\t -$_pkg: "
-		if hash $_pkg &>/dev/null; then echo ok; continue; fi
-		yum -y install $_pkg &>/dev/null
-		if [ $? -eq 0 ]; then echo ok; else echo fail; fi
-	done
-elif hash apt &>/dev/null
-then
-        # debian based ..
-        echo found apt.
-	echo -en "\t -update: "
-	apt update &>/dev/null
-	if [ $? -eq 0 ]; then echo ok; else echo fail; fi
-	# proot for termux
-        for _pkg in tzdata curl wget su sudo unzip proot
-        do
-                echo -en "\t -$_pkg: "
-		if hash $_pkg &>/dev/null; then echo ok; continue; fi
-                apt -y install $_pkg &>/dev/null
-                if [ $? -eq 0 ]; then echo ok; else echo fail; fi
-        done
-elif hash apk &>/dev/null
-then
-        # alpine based ..
-        echo found apk.
-        for _pkg in tzdata curl wget su sudo unzip
-        do
-                echo -en "\t -$_pkg: "
-		if hash $_pkg &>/dev/null; then echo ok; continue; fi
-                apk add --no-cache $_pkg &>/dev/null
-                if [ $? -eq 0 ]; then echo ok; else echo fail; fi
-        done
-elif hash pkg &>/dev/null
-then
-	# freebsd ..
-	echo found pkg.
-	for _pkg in tzdata curl wget su sudo unzip
-	do
-		echo -en "\t -$_pkg: "
-		if hash $_pkg &>/dev/null; then echo ok; continue; fi
-		pkg install -y $_pkg &>/dev/null
-		if [ $? -eq 0 ]; then echo ok; else echo fail; fi
-	done
-elif hash microdnf &>/dev/null
-then
-	# rocky
-	echo found microdnf.
-	for _pkg in tzdata curl wget su sudo unzip findutils
-	do
-		echo -en "\t -$_pkg: "
-		if hash $_pkg &>/dev/null; then echo ok; continue; fi
-		microdnf install -y $_pkg &>/dev/null
-		if [ $? -eq 0 ]; then echo ok; else echo fail; fi
-	done
-else
-	echo no supported package manager found.
-fi
+# dl busybox and proot
+case $_os in
+	cygwin)
+		# ignore
+		:
+	;;
+	*)
+		mkdir -p bin
+		if [ ! -e bin/$_system-busybox ]; then dl $_system-busybox busybox; fi
+		if [ ! -e bin/$_system-proot ]; then dl $_system-proot proot; fi
+		if [ ! -e bin/$_system-busybox ]; then mv $_system-busybox bin; fi
+		if [ ! -e bin/$_system-proot ]; then mv $_system-proot bin; fi
+		chmod +x bin/$_system-busybox
+		chmod +x bin/$_system-proot
+		if [ ! -e bin/wget ]; then ln -s $_system-busybox bin/wget; fi
+		if [ ! -e bin/find ]; then ln -s $_system-busybox bin/find; fi
+		if [ ! -e bin/hostname ]; then ln -s $_system-busybox bin/hostname; fi
+		if [ ! -e bin/unzip ]; then ln -s $_system-busybox bin/unzip; fi
+		if [ ! -e bin/kill ]; then ln -s $_system-busybox bin/kill; fi
+		if [ ! -e bin/pgrep ]; then ln -s $_system-busybox bin/pgrep; fi
+		if [ ! -e bin/su ]; then ln -s $_system-busybox bin/su; fi
+		if [ ! -e bin/adduser ]; then ln -s $_system-busybox bin/adduser; fi
+		if [ ! -e bin/deluser ]; then ln -s $_system-busybox bin/deluser; fi
+		if [ ! -e bin/id ]; then ln -s $_system-busybox bin/id; fi
+	;;
+esac
+
+# package systems removed busybox
 
 # is there anybody out there?
 if [ ! -f $_api ]
@@ -505,38 +441,17 @@ fi
 
 # hostname check
 echo
-_r=$(grep "^127.0.0.1 $(host_name)" /etc/hosts)
-if [ "$_r" == "" ] && [ ! "$_os" == "termux" ]
+if [ -e /etc/hosts ]
 then
 	>&2 echo "setting hostname in /etc/hosts"
-	echo 127.0.0.1 $(host_name) >> /etc/hosts &>/dev/null
-	if [ $? -ne 0 ]
-	then
-		# will fail on cygwin todo: removing the sym and create hosts?
-		>&2 echo failed setting /etc/hosts
-	fi
+	cp /etc/hosts .
+	echo 127.0.0.1 $(./bin/hostname) >> hosts &>/dev/null
 fi
 
 # zone data
 echo
-if [ ! -e /usr/share/zoneinfo/tzdata.zi ] && [ ! "$_os" == "termux" ]
-then
-	echo "installing tzdata: tzdata.zi"
-	rm -f zoneinfo.tar.gz
-	mkdir -p /usr/share/zoneinfo &>/dev/null
-	if [ $? -ne 0 ]; then echo error creating /usr/share/zoneinfo; exit 1; fi
-	if [ ! -e tzdata.zi ]; then dl tzdata.zi; fi
-	cp tzdata.zi /usr/share/zoneinfo/ &>/dev/null
-fi
-
-if [ ! -e /usr/share/zoneinfo/zone1970.tab ] && [ ! "$_os" == "termux" ]
-then
-	echo "installing tzdata: zone1970.tab"
-	mkdir -p /usr/share/zoneinfo
-	if [ $? -ne 0 ]; then echo error creating /usr/share/zoneinfo; exit 1; fi
-	if [ ! -e zone1970.tab ]; then dl zone1970.tab; fi
-	cp zone1970.tab /usr/share/zoneinfo/ &>/dev/null
-fi
+if [ ! -e tzdata.zi ]; then dl tzdata.zi; fi
+if [ ! -e zone1970.tab ]; then dl zone1970.tab; fi
 
 # dl libs
 echo
@@ -602,35 +517,12 @@ chmod +x $_api 2>/dev/null
 # add user
 echo
 
-# rewrite
-if [ "$(id telerising-script 2>/dev/null)" == "" ]
-then
-	pw useradd telerising-script -d "$_install_path" &>/dev/null
-fi
+# using proot for user
 
-if [ "$(id telerising-script 2>/dev/null)" == "" ]
-then
-	useradd -d "$_install_path" -s /bin/false telerising-script &>/dev/null
-fi
+# todo find free id
+_id=10000
 
-if [ "$(id telerising-script 2>/dev/null)" == "" ] && [ -e /etc/passwd ] && [ -e /etc/group ] && [ ! "$_os" == "termux" ]
-then
-	for _id in {1000..2000}
-	do
-		if [[ ! "$_ids" == *":$_id:"* ]] && [[ ! "$_groups" == *":$_id:"* ]]
-		then
-			echo "telerising-script:x:$_id:$_id:,,,:/opt/telerising:/bin/false" >> /etc/passwd
-			echo "telerising-script:x:$_id:" >> /etc/group
-			if [ -e /etc/shadow ]
-			then
-				echo "telerising-script:!:20279:0:99999:7:::" >> /etc/shadow
-			fi
-			break
-		fi
-	done
-fi
-
-if [ ! "$(id telerising-script 2>/dev/null)" == "" ]; then chown -R telerising-script "$_install_path"; fi
+chown -R 1000 "$_install_path"
 
 # finish
 echo
@@ -659,16 +551,8 @@ case $_system in
 	;;
 esac
 
-if [ "$_os" == "termux" ]
-then
-	if ! hash proot &>/dev/null; then >&2 echo proot is needed under termux; exit 1; fi
-	if [ ! -e tzdata.zi ]; then dl tzdata.zi; fi
-	if [ ! -e zone1970.tab ]; then dl zone1970.tab; fi
-	cat /etc/hosts > hosts
-	echo "127.0.0.1 $(host_name)" >> hosts
-	unset LD_PRELOAD
-	proot --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc ./ld-* ./api
-elif [ "$_os" == "cygwin" ]
+# todo test termux work wit out proot
+if [ "$_os" == "cygwin" ]
 then
 	# fixing perm when giving to windows kernel
 	chmod -R 777 "$_install_path"
@@ -678,25 +562,16 @@ then
 	do
 		sleep 5
 	done
-elif [ $(su -m telerising-script -c "ls $_install_path" 2>/dev/null|wc -l) -ne 0 ]
-then
-	echo su found
-	>&2 su -m telerising-script -c "./$_bin ./$_api"
-elif [ $(su -s /bin/sh telerising-script -c "ls $_install_path" 2>/dev/null|wc -l) -ne 0 ]
-then
-	echo su found
-	>&2 su -s /bin/sh telerising-script -c "./$_bin ./$_api"
-elif [ $(su -s /bin/ls telerising-script "$_install_path" 2>/dev/null|wc -l) -ne 0 ]
-then
-        echo su found
-        >&2 su -s ./$_bin telerising-script ./$_api
-elif [ $(sudo -u telerising-script ls "$_install_path" 2>/dev/null|wc -l) -ne 0 ]
-then
-        echo sudo found
-        >&2 sudo -u telerising-script bash -c "cd '$_install_path'; ./$_bin ./$_api"
 else
-        echo cannot start as telerising user. running telerising as root
-        >&2 ./$_bin ./$_api
+	# if root then run under telerising-script
+	if [ $(./bin/id -u) -eq 0 ]
+	then
+		./bin/adduser telerising-script
+		./bin/su telerising-script -p -c "./bin/$_system-proot --kill-on-exit --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc ./ld-* ./api"
+		./bin/deluser telerising-script
+	else
+		./bin/$_system-proot --kill-on-exit --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc ./ld-* ./api
+	fi
 fi
 
 
