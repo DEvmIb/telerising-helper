@@ -233,13 +233,18 @@ else
 	_auto=1
 fi
 
+if [[ "$(export)" =~ com\.termux ]]
+then
+	_os=termux
+fi
+
 # perms check
 
 if [ "$_os" == "cygwin" ]
 then
 	# cygwin no root needed
 	>&2 echo running under cygwin
-elif [[ "$(export)" =~ com\.termux ]]
+elif [ "$_os" == "termux" ]
 then
 	# termux no root
 	>&2 echo runing under termux
@@ -357,7 +362,8 @@ then
 	echo -en "\t -update: "
 	apt update &>/dev/null
 	if [ $? -eq 0 ]; then echo ok; else echo fail; fi
-        for _pkg in tzdata curl wget su sudo unzip
+	# proot for termux
+        for _pkg in tzdata curl wget su sudo unzip proot
         do
                 echo -en "\t -$_pkg: "
 		if hash $_pkg &>/dev/null; then echo ok; continue; fi
@@ -457,7 +463,7 @@ fi
 # hostname check
 echo
 _r=$(grep "^127.0.0.1 $(host_name)" /etc/hosts)
-if [ "$_r" == "" ] && [[ ! "$(export)" =~ com\.termux ]]
+if [ "$_r" == "" ] && [ ! "$_os" == "termux" ]
 then
 	>&2 echo "setting hostname in /etc/hosts"
 	echo 127.0.0.1 $(host_name) >> /etc/hosts &>/dev/null
@@ -470,24 +476,23 @@ fi
 
 # zone data
 echo
-						# skip on termux.
-if [ ! -e /usr/share/zoneinfo/tzdata.zi ] && [[ ! "$(export)" =~ com\.termux ]]
+if [ ! -e /usr/share/zoneinfo/tzdata.zi ] && [ ! "$_os" == "termux" ]
 then
 	echo "installing tzdata: tzdata.zi"
 	rm -f zoneinfo.tar.gz
-	mkdir -p /usr/share/zoneinfo
+	mkdir -p /usr/share/zoneinfo &>/dev/null
 	if [ $? -ne 0 ]; then echo error creating /usr/share/zoneinfo; exit 1; fi
-	dl tzdata.zi
-	cp tzdata.zi /usr/share/zoneinfo/
+	if [ ! -e tzdata.zi ]; then dl tzdata.zi; fi
+	cp tzdata.zi /usr/share/zoneinfo/ &>/dev/null
 fi
 
-if [ ! -e /usr/share/zoneinfo/zone1970.tab ] && [[ ! "$(export)" =~ com\.termux ]]
+if [ ! -e /usr/share/zoneinfo/zone1970.tab ] && [ ! "$_os" == "termux" ]
 then
 	echo "installing tzdata: zone1970.tab"
 	mkdir -p /usr/share/zoneinfo
 	if [ $? -ne 0 ]; then echo error creating /usr/share/zoneinfo; exit 1; fi
-	dl zone1970.tab
-	cp zone1970.tab /usr/share/zoneinfo/
+	if [ ! -e zone1970.tab ]; then dl zone1970.tab; fi
+	cp zone1970.tab /usr/share/zoneinfo/ &>/dev/null
 fi
 
 # dl libs
@@ -565,7 +570,7 @@ then
 	useradd -d "$_install_path" -s /bin/false telerising-script &>/dev/null
 fi
 
-if [ "$(id telerising-script 2>/dev/null)" == "" ] && [ -e /etc/passwd ] && [ -e /etc/group ] && [[ ! "$(export)" =~ com\.termux ]]
+if [ "$(id telerising-script 2>/dev/null)" == "" ] && [ -e /etc/passwd ] && [ -e /etc/group ] && [ ! "$_os" == "termux" ]
 then
 	for _id in {1000..2000}
 	do
@@ -611,8 +616,15 @@ case $_system in
 	;;
 esac
 
-
-if [ "$_os" == "cygwin" ]
+if [ "$_os" == "termux" ]
+then
+	if ! hash proot &>/dev/null; then >&2 echo proot is needed under termux; exit 1; fi
+	if [ ! -e tzdata.zi ]; then dl tzdata.zi; fi
+	if [ ! -e zone1970.tab ]; then dl zone1970.tab; fi
+	cat /etc/hosts > hosts
+	echo "127.0.0.1 $(hostname)" >> hosts
+	proot --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc ./ld-* ./api
+elif [ "$_os" == "cygwin" ]
 then
 	# fixing perm when giving to windows kernel
 	chmod -R 777 "$_install_path"
