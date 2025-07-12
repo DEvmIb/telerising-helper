@@ -9,7 +9,7 @@
 # ctrl+c not killing tr
 _mirror=https://raw.githubusercontent.com/DEvmIb/telerising-helper/refs/heads/main
 _sub=
-_install_path=$1
+_install_path=${1:-~/telerising}
 _system=$(echo $2)
 _os=$(uname -o)
 _kernel=$(uname -s)
@@ -21,7 +21,7 @@ _machine=${_machine,,}
 
 _api=api
 
-if [ "$1" == "" ]
+if [ "$1" == "-h" ] || [ "$1" == "--help" ]
 then
 	echo "####################################################################################################"
 	echo "#                                                                                                  #"
@@ -41,7 +41,7 @@ then
 	echo "#    - bash                                                                                        #"
 	echo "#                                                                                                  #"
 	echo "# params:                                                                                          #"
-	echo "#    - install_dir | where should telerising be installed                                          #"
+	echo "#    - install_dir | where should telerising be installed | default [~/telerising]                 #"
 	echo "#    - systems:                                                                                    #"
 	echo "#      - empty          | try to autodetect                                                        #"
 	echo "#      - arm64_raspbian | arm64 devices                                                            #"
@@ -114,7 +114,7 @@ function dl {
 function update {
 	local _latest _ver _file _api_search _api_path _del
 	if ! hash unzip 2>/dev/null; then >&2 echo missing unzip, please install; exit 1; fi
-	_latest=$(curl -s https://api.github.com/repos/sunsettrack4/telerising-api/releases/latest)
+	_latest=$(curl -s https://api.github.com/repos/sunsettrack4/telerising-api/releases/latest 2>/dev/null)
 	if [[ ! "$_latest" =~ /releases/download/v([.0-9]+)/telerising-v[.0-9]+_$_system\.zip ]]
 	then
 		if [ ! -e "$_install_path/$_api" ]; then >&2 echo failed getting current version; exit 1; fi
