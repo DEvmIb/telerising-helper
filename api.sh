@@ -49,6 +49,7 @@ then
 	echo "#        - fedora       | aarch64, x86_64                                                          #"
 	echo "#        - rocky        | aarch64, x86_64                                                          #"
 	echo "#        - oracle       | aarch64, x86_64                                                          #"
+	echo "#        - redhat/ubi8  | aarch64, x86_64                                                          #"
 	echo "#                                                                                                  #"
 	echo "####################################################################################################"
 	exit 0
