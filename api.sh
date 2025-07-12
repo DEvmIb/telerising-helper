@@ -1,14 +1,10 @@
 #/bin/bash
-# curl -s http://216.225.197.57:63142/newenigma/api.sh|bash
-# todo
-# fix adduser on bsd
-# freebsd: libz.so.1
-# freebsd: check if fbsd has v6 v7 v8 and add libs
-# using static busybox for all the commands? lets see if a user comes in and cant install any needed foo on his system.
-# cygwin test system dl win
-# ctrl+c not killing tr
-# when ~ /root then not use /root. (perms)
-# all pkg no cache..
+# todo:
+#  - freebsd: check if fbsd has v6 v7 v8 and add libs
+#  - when ~ /root then not use /root. (perms)
+#  - all pkg no cache..
+#  - proot: resolv.conf zones hosts
+#  - busybox for find when miss
 _mirror=https://raw.githubusercontent.com/DEvmIb/telerising-helper/refs/heads/main
 _sub=
 _install_path=${1:-~/telerising}
