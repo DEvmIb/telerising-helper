@@ -211,9 +211,15 @@ function end {
 		elif hash pkill &>/dev/null
 		then
 			pkill -f $_kill &>/dev/null
-		else
+		elif hash grep kill  &>/dev/null
 			# find in proc
-			
+			_r=(grep ${_kill%%.*} /proc/*/status)
+			if [[ "$_r" =~ /proc/([0-9]+)/status: ]]
+			then
+				_pid=${BASH_REMATCH[1]}
+				kill $_pid
+			fi
+		fi
 	done
 	_trap=1
 	exit 1
