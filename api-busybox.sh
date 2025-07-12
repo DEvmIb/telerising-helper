@@ -5,6 +5,7 @@
 #  - all pkg no cache..
 #  - proot: resolv.conf zones hosts
 #  - busybox for find when miss
+
 _mirror=https://raw.githubusercontent.com/DEvmIb/telerising-helper/refs/heads/main
 _sub=
 _install_path=${1:-~/telerising}
