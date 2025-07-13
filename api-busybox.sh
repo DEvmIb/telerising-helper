@@ -361,7 +361,12 @@ case $_os in
 	*)
 		mkdir -p bin
 		if [ ! -e bin/$_system-busybox ]; then dl $_system-busybox busybox; fi
-		if [ ! -e bin/$_system-proot ]; then dl $_system-proot proot; fi
+		if [ "$_os" == "termux" ]
+		then
+			if [ ! -e bin/$_system-proot ]; then dl $_system-proot-termux proot; mv $_system-proot-termux $_system-proot; fi
+		else
+			if [ ! -e bin/$_system-proot ]; then dl $_system-proot proot; fi
+		fi
 		if [ ! -e bin/$_system-busybox ]; then mv $_system-busybox bin; fi
 		if [ ! -e bin/$_system-proot ]; then mv $_system-proot bin; fi
 		chmod +x bin/$_system-busybox
