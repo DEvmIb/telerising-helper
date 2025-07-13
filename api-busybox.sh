@@ -14,6 +14,7 @@ _system=$(echo $2)
 _os=$(uname -o)
 _kernel=$(uname -s)
 _machine=$(uname -m)
+_termux_busybox=1.37.0
 
 _os=${_os,,}
 _kernel=${_kernel,,}
@@ -360,15 +361,18 @@ case $_os in
 	;;
 	*)
 		mkdir -p bin
-		if [ ! -e bin/$_system-busybox ]; then dl $_system-busybox busybox; fi
 		if [ "$_os" == "termux" ]
 		then
+			export LD_LIBRARY_PATH=:$LD_LIBRARY_PATH;bin
 			if [ ! -e bin/$_system-proot ]; then dl $_system-proot-termux proot; mv $_system-proot-termux $_system-proot; fi
+			if [ ! -e bin/$_system-busybox ]; then dl $_system-busybox-termux; mv $_system-busybox-termux bin; fi
+			if [ ! -e bin/libbusybox.so.$_termux_busybox ]; then dl $_system-busybox-termux-libbusybox.so.$_termux_busybox; mv $_system-busybox-termux-libbusybox.so.$_termux_busybox bin/libbusybox.so.$_termux_busybox; fi
 		else
 			if [ ! -e bin/$_system-proot ]; then dl $_system-proot proot; fi
+			if [ ! -e bin/$_system-busybox ]; then dl $_system-busybox busybox; fi
+			if [ ! -e bin/$_system-busybox ]; then mv $_system-busybox bin; fi
+			if [ ! -e bin/$_system-proot ]; then mv $_system-proot bin; fi
 		fi
-		if [ ! -e bin/$_system-busybox ]; then mv $_system-busybox bin; fi
-		if [ ! -e bin/$_system-proot ]; then mv $_system-proot bin; fi
 		chmod +x bin/$_system-busybox
 		chmod +x bin/$_system-proot
 		if [ ! -e bin/wget ]; then ln -s $_system-busybox bin/wget; fi
@@ -572,8 +576,8 @@ then
 		sleep 5
 	done
 else
-	mkdir -p proot-tmp
-	export PROOT_TMP_DIR=proot-tmp
+	#mkdir -p proot-tmp
+	#export PROOT_TMP_DIR=proot-tmp
 	# if root then run under telerising-script
 	if [ $(./bin/id -u) -eq 0 ]
 	then
