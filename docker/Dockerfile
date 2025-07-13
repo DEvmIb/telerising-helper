@@ -15,4 +15,4 @@ VOLUME /telerising
 
 EXPOSE 5000
 
-RUN rm -rf /usr/bin/qemu-*
+RUN rm -f /usr/bin/qemu-*
