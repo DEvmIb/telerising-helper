@@ -291,7 +291,7 @@ fi
 # some test to make sure we not destroy users system with wrong paths
 
 if [ "$_install_path" == "/" ]; then >&2 echo choose other folder to install not root; exit 1; fi
-if [[ "$_install_path" == *"/tmp/"* ]]; then >&2 echo; echo; echo warning if you install into tmp you telerising settings may be deleted on next reboot; echo; echo; echo sleep 5; fi
+if [[ "$_install_path" == *"/tmp/"* ]]; then >&2 echo; echo; echo warning if you install into tmp you telerising settings may be deleted on next reboot; echo; echo; echo; sleep 5; fi
 if [[ "$_install_path" == *"/root/"* ]]; then >&2 echo; echo; echo -e "${_c_red}${_c_blink}warning${_c_clear}${_c_red} if you install into ${_c_clear}'/root'${_c_red} i cannot use ${_c_clear}'su'${_c_red}. continue in 10s.${_c_clear}"; echo; echo; echo;sleep 10; fi
 
 mkdir -p "$_install_path"
@@ -597,6 +597,7 @@ else
 		else
 			_su_works=$(./bin/su $_user -p -c "ls '$_install_path'" 2>/dev/null)
 			_proot_works=$(./bin/$_system-proot --kill-on-exit --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc ls "$_install_path" 2>/dev/null)
+			./bin/$_system-proot --kill-on-exit --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc ls "$_install_path"
 			if [ ! "$_su_works" == "" ] && [ ! "$_proot_works" == "" ]
 			then
 				>&2 echo su and proot seems to work.
