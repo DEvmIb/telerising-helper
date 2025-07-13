@@ -236,6 +236,7 @@ function end {
 		./bin/kill $(./bin/pgrep -f $_kill 2>/dev/null) &>/dev/null
 	done
 	./bin/deluser telerising-script &>/dev/null
+	./bin/delgroup telerising-script &>/dev/null
 	_trap=1
 	exit 1
 }
@@ -367,9 +368,12 @@ case $_os in
 		if [ ! -e bin/kill ]; then ln -s $_system-busybox bin/kill; fi
 		if [ ! -e bin/pgrep ]; then ln -s $_system-busybox bin/pgrep; fi
 		if [ ! -e bin/su ]; then ln -s $_system-busybox bin/su; fi
+		if [ ! -e bin/addgroup ]; then ln -s $_system-busybox bin/addgroup; fi
+		if [ ! -e bin/delgroup ]; then ln -s $_system-busybox bin/delgroup; fi
 		if [ ! -e bin/adduser ]; then ln -s $_system-busybox bin/adduser; fi
 		if [ ! -e bin/deluser ]; then ln -s $_system-busybox bin/deluser; fi
 		if [ ! -e bin/id ]; then ln -s $_system-busybox bin/id; fi
+		if [ ! -e bin/chown ]; then ln -s $_system-busybox bin/chown; fi
 	;;
 esac
 
@@ -566,9 +570,12 @@ else
 	# if root then run under telerising-script
 	if [ $(./bin/id -u) -eq 0 ]
 	then
-		./bin/adduser telerising-script
+		./bin/addgroup telerising-script
+		./bin/adduser -h "$_install_path" -s /bin/sh -G telerising-script -D telerising-script
+		./bin/chown -R telerising-script:telerising-script "$_install_path"
 		./bin/su telerising-script -p -c "./bin/$_system-proot --kill-on-exit --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc ./ld-* ./api"
 		./bin/deluser telerising-script
+		./bin/delgroup telerising-script
 	else
 		./bin/$_system-proot --kill-on-exit --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc ./ld-* ./api
 	fi
