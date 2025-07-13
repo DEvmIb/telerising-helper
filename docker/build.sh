@@ -30,6 +30,9 @@ if [ $? -ne 0 ]; then echo err build arm32v6; exit 1; fi
 docker build -t ad0lar/telerising-alpine:arm32v7 -f Dockerfile --platform="linux/arm/v7" .
 if [ $? -ne 0 ]; then echo err build arm32v7; exit 1; fi
 
+docker build -t ad0lar/telerising-alpine:arm32v8 -f Dockerfile --platform="linux/arm/v8" .
+if [ $? -ne 0 ]; then echo err build arm32v8; exit 1; fi
+
 docker build -t ad0lar/telerising-alpine:amd64 -f Dockerfile --platform="linux/amd64" .
 if [ $? -ne 0 ]; then echo err build amd64; exit 1; fi
 
@@ -43,6 +46,7 @@ chmod +x manifest-tool
 docker push ad0lar/telerising-alpine:amd64
 docker push ad0lar/telerising-alpine:arm32v6
 docker push ad0lar/telerising-alpine:arm32v7
+docker push ad0lar/telerising-alpine:arm32v8
 docker push ad0lar/telerising-alpine:arm64
 
 ./manifest-tool push from-spec multi-arch-manifest.yaml
