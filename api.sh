@@ -106,7 +106,7 @@ fi
 function dloader {
 	local _bin
 	if hash wget &>/dev/null; then _bin=wget; else if hash curl &>/dev/null; then _bin=curl; fi; fi
-	if [ -e ./bin/wget ]; then _bin=./bin/wget; fi
+	#if [ -e ./bin/wget ]; then _bin=./bin/wget; fi
 	if [ "$_bin" == "" ]; then >&2 echo no downloader on your system, need curl or wget; exit 1; fi
 	echo "$_bin"
 }
