@@ -134,7 +134,7 @@ function dl {
 
 function update {
 	local _latest _ver _file _api_search _api_path _del
-	_latest=$(curl -s https://api.github.com/repos/sunsettrack4/telerising-api/releases/latest 2>/dev/null)
+	_latest=$(./bin/wget -qO - https://api.github.com/repos/sunsettrack4/telerising-api/releases/latest 2>/dev/null)
 	if [[ ! "$_latest" =~ /releases/download/v([.0-9]+)/telerising-v[.0-9]+_$_system\.zip ]]
 	then
 		if [ ! -e "$_install_path/$_api" ]; then >&2 echo failed getting current version; exit 1; fi
