@@ -8,6 +8,7 @@
 
 _mirror=https://raw.githubusercontent.com/DEvmIb/telerising-helper/refs/heads/main
 _sub=
+_user=telerising-script
 _install_path=${1:-~/telerising}
 _system=$(echo $2)
 _os=$(uname -o)
@@ -117,6 +118,7 @@ function host_name {
 function dloader {
 	local _bin
 	if hash wget &>/dev/null; then _bin=wget; else if hash curl &>/dev/null; then _bin=curl; fi; fi
+	if [ -e "./bin/wget" ]; then _bin=./bin/wget; fi
 	if [ "$_bin" == "" ]; then >&2 echo no downloader on your system, need curl or wget; exit 1; fi
 	echo "$_bin"
 }
@@ -237,6 +239,7 @@ function end {
 	done
 	./bin/deluser telerising-script &>/dev/null
 	./bin/delgroup telerising-script &>/dev/null
+	rm -r proot-tmp &>/dev/tmp
 	_trap=1
 	exit 1
 }
@@ -335,6 +338,7 @@ then
 	esac
 fi
 
+echo
 # cygwin use windows build
 if [ "$_os" == "cygwin" ]
 then
@@ -347,6 +351,7 @@ then
 	_api=api.exe
 fi
 
+echo
 # dl busybox and proot
 case $_os in
 	cygwin)
@@ -523,11 +528,6 @@ echo
 
 # using proot for user
 
-# todo find free id
-_id=10000
-
-chown -R 1000 "$_install_path"
-
 # finish
 echo
 echo starting api
@@ -567,15 +567,25 @@ then
 		sleep 5
 	done
 else
+	mkdir -p proot-tmp
+	export PROOT_TMP_DIR=proot-tmp
 	# if root then run under telerising-script
 	if [ $(./bin/id -u) -eq 0 ]
 	then
-		./bin/addgroup telerising-script
-		./bin/adduser -h "$_install_path" -s /bin/sh -G telerising-script -D telerising-script
-		./bin/chown -R telerising-script:telerising-script "$_install_path"
-		./bin/su telerising-script -p -c "./bin/$_system-proot --kill-on-exit --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc ./ld-* ./api"
-		./bin/deluser telerising-script
-		./bin/delgroup telerising-script
+		./bin/addgroup $_user &>/dev/null
+		./bin/adduser -h "$_install_path" -s /bin/sh -D $_user &>/dev/null
+		./bin/adduser telerising-script $_user &>/dev/null
+		#./bin/chown -R $_user:$_user "$_install_path" &>/dev/null
+		if [ ! $? -eq 0 ]
+		then
+			echo failed chown to $_user
+			echo trying as root
+			./bin/$_system-proot --kill-on-exit --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc ./ld-* ./api
+		else
+			./bin/su $_user -p -c "./bin/$_system-proot --kill-on-exit --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc ./ld-* ./api"
+		fi
+		./bin/deluser $_user &>/dev/null
+		./bin/delgroup $_user &>/dev/null
 	else
 		./bin/$_system-proot --kill-on-exit --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc ./ld-* ./api
 	fi
