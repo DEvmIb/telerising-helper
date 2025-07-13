@@ -161,7 +161,10 @@ function update {
 		>&2 echo update not needed v$_ver
 		return
 	fi
-	dl https://github.com/sunsettrack4/telerising-api/releases/download/v$_ver/$_file
+	if [ ! -e "$_file" ]
+	then
+		dl https://github.com/sunsettrack4/telerising-api/releases/download/v$_ver/$_file
+	fi
 	rm -rf tmp
 	mkdir -p tmp
 	>&2 echo extracting..
