@@ -1,10 +1,7 @@
 #exit
 # todo:
 #  - freebsd: check if fbsd has v6 v7 v8 and add libs
-#  - when ~ /root then not use /root. (perms)
-#  - all pkg no cache..
-#  - proot: resolv.conf zones hosts
-#  - busybox for find when miss
+#  - test busybox working
 
 _mirror=https://raw.githubusercontent.com/DEvmIb/telerising-helper/refs/heads/main
 _sub=
@@ -65,7 +62,7 @@ then
 	echo "#                                                                                                  #"
 	echo "# usage: [install_dir] [system]                                                                    #"
 	echo "#                                                                                                  #"
-	echo "# this script needs root for then following tasks:                                                 #"
+	echo "# this script needs root for then following tasks: (obsolete, using proot and busybox now)         #"
 	echo "#    - install tzdata       | if not exists in /usr/share/zonedata                                 #"
 	echo "#    - modifying /etc/hosts | telerising needs to resolve our own hostname                         #"
 	echo "#    - add user             | if possible create user telerising else run under root               #"
