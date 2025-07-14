@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>Telerising</Name>
+  <Repository>ad0lar/telerising-alpine</Repository>
+  <Registry>https://hub.docker.com/r/ad0lar/telerising-alpine</Registry>
+  <Network>host</Network>
+  <MyIP/>
+  <Shell>bash</Shell>
+  <Privileged>false</Privileged>
+  <Support/>
+  <Project/>
+  <Overview>Get advanced access to IPTV internet streams</Overview>
+  <Category/>
+  <WebUI>http://[IP]:[PORT:5000]</WebUI>
+  <TemplateURL/>
+  <Icon>https://findicons.com/files/icons/2461/spiffy/256/zattoo.png</Icon>
+  <ExtraParams/>
+  <PostArgs/>
+  <CPUset>0,1</CPUset>
+  <DateInstalled>1614493831</DateInstalled>
+  <DonateText/>
+  <DonateLink/>
+  <Description>Get advanced access to IPTV internet streams over Telerising</Description>
+  <Networking>
+    <Mode>host</Mode>
+    <Publish>
+      <Port>
+        <HostPort>5000</HostPort>
+        <ContainerPort>5000</ContainerPort>
+        <Protocol>tcp</Protocol>
+      </Port>
+    </Publish>
+  </Networking>
+  <Environment>
+      <Variable>
+      <Value>Y</Value>
+      <Name>TRUPDATE</Name>
+      <Mode/>
+      </Variable>
+  </Environment>
+  <Data>
+    <Volume>
+      <HostDir>/mnt/cache/docker/appdata/telerising</HostDir>
+      <ContainerDir>/telerising</ContainerDir>
+      <Mode>rw</Mode>
+    </Volume>
+  </Data>
+  <Labels/>
+  <Config Name="Telerising Update" Target="TRUPDATE" Default="Y" Mode="" Description="try to update on each container start" Type="Variable" Display="always" Required="false" Mask="false"/>
+  <Config Name="Telerising Path" Target="/telerising" Default="" Mode="rw" Description="Container Path: /telerising" Type="Path" Display="always" Required="false" Mask="false">/mnt/cache/docker/appdata/telerising</Config>
+  <Config Name="Telerising Port" Target="5000" Default="" Mode="tcp" Description="Container Port: " Type="Port" Display="always" Required="false" Mask="false">5000</Config>
+</Container>
