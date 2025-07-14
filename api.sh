@@ -1,7 +1,8 @@
-#exit
+#!/bin/bash
 # todo:
 #  - freebsd: check if fbsd has v6 v7 v8 and add libs
 #  - test busybox working
+#  - use proot on termux when installed
 
 _mirror=https://raw.githubusercontent.com/DEvmIb/telerising-helper/refs/heads/main
 _sub=
