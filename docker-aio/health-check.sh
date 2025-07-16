@@ -27,6 +27,8 @@ _kodi_url=$HEALTH_KODI_URL
 _mqtt_enabled=0
 _matrix_enabled=0
 
+if [[ ! "$_idle" =~ ^[0-9]+$ ]]; then _idle=300; fi
+
 if [[ ! "$_hook_type" =~ [JT] ]]; then _hook_type=J; fi
 if [[ ! "$_mqtt_type" =~ [JT] ]]; then _mqtt_type=J; fi
 if [[ ! "$_matrix_type" =~ [JT] ]]; then _matrix_type=J; fi
