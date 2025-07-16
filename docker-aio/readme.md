@@ -6,10 +6,13 @@
 
 ## ENV Variables
 
-| Key         | Value | Description                         |
-|-------------|-------|-------------------------------------|
-| TRUPDATE    | Y     | Update Telerising on Docker restart.|
-| HEALTH_HOOK | URL   | Post HEALTH Status to this URL.     |
+| Key               | Value | Description                         |
+|-------------------|-------|-------------------------------------|
+| TRUPDATE          | Y     | Update Telerising on Docker restart.|
+| HEALTH_HOOK       | URL   | Post HEALTH Status to this URL.     |
+| HEALTH_MQTT_HOST  | HOST  | mqtt hostname                       |
+| HEALTH_MQTT_PORT  | PORT  | mqqt port                           |
+| HEALTH_MQTT_TOPIC | TOPIC | send to this topic                  |
 
 ## Volumes
 

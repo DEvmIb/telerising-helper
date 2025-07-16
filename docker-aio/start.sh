@@ -1,6 +1,6 @@
 #!/bin/sh
 export PYTHONUNBUFFERED=1
-apk add --no-cache bash py3-bottle py3-requests py3-xmltodict git jq curl screen socat tzdata
+apk add --no-cache bash py3-bottle py3-requests py3-xmltodict git jq curl screen socat tzdata mosquitto-clients
 
 mkdir -p /telerising
 mkdir -p /easyepg

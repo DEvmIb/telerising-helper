@@ -5,6 +5,12 @@ _pro=/telerising/app/static/json/providers.json
 _pro_state=""
 _idle=300
 _hook="$HEALTH_HOOK"
+_mqtt_host="$HEALTH_MQTT_HOST"
+_mqtt_port="$HEALTH_MQTT_PORT"
+_mqtt_topic="$HEALTH_MQTT_TOPIC"
+_mqtt_enabled=0
+
+if [ ! "$_mqtt_host" == "" ] && [ ! "$_mqtt_port" == "" ] && [ ! "$_mqtt_topic" == "" ]; then _mqtt_enabled=1; fi
 
 declare -A _pro_db
 
@@ -53,6 +59,7 @@ do
                 then
                         echo "easyepg down: on host ($(hostname))"
                         if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"ERROR","name":"easyepg","id":"easyepg"}'; fi
+			if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m '{"health":"ERROR","name":"easyepg","id":"easyepg"}'; fi
                         rm -f /tmp/easyepg.status.ok
                         echo $(date +%s) > /tmp/easyepg.status.fail
                 fi
@@ -61,6 +68,7 @@ do
                 then
                         echo "easyepg up: on host ($(hostname))"
                         if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"OK","name":"easyepg","id":"easyepg"}'; fi
+			if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m '{"health":"OK","name":"easyepg","id":"easyepg"}'; fi
                         echo $(date +%s) > /tmp/easyepg.status.ok
                         rm -f /tmp/easyepg.status.fail
                 fi
@@ -73,6 +81,7 @@ do
 		then
 			echo "telerising down: on host ($(hostname))"
 			if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"ERROR","name":"telersing","id":"telerising"}'; fi
+			if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m '{"health":"ERROR","name":"telersing","id":"telersing"}'; fi
 			rm -f /tmp/telerising.status.ok
 			rm -f /tmp/telerising.status.*.*
 			echo $(date +%s) > /tmp/telerising.status.fail
@@ -84,6 +93,7 @@ do
 		then
 			echo "telerising up: on host ($(hostname))"
 			if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"OK","name":"telersing","id":"telerising"}'; fi
+			if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m '{"health":"OK","name":"telersing","id":"telersing"}'; fi
 			echo $(date +%s) > /tmp/telerising.status.ok
 			rm -f /tmp/telerising.status.fail
 		fi
@@ -103,7 +113,8 @@ do
 	                if [ ! -e "/tmp/telerising.status.$_name.fail" ]
 	                then
 	                        echo "telerising error: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
-				if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"ERROR","name":"'"$_fullname"'","id":"'"$_name"'"}'; fi
+				if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"ERROR","name":"'"$_fullname"'","id":"'"$_name"'","msg":"'"$_msg"'"}'; fi
+				if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m '{"health":"ERROR","name":"'"$_fullname"'","id":"'"$_name"'","msg":"'"$_msg"'"}'; fi
 	                        echo $(date +%s) > "/tmp/telerising.status.$_name.fail"
 				echo $_msg > "/tmp/telerising.msg.$_name"
 	                        rm -f "/tmp/telerising.status.$_name.ok"
@@ -114,7 +125,8 @@ do
 	                if [ ! -e "/tmp/telerising.status.$_name.ok" ]
 	                then
 	                        echo "telerising ok: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
-				if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"OK","name":"'"$_fullname"'","id":"'"$_name"'"}'; fi
+				if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"OK","name":"'"$_fullname"'","id":"'"$_name"'","msg":"'"$_msg"'"}'; fi
+				if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m '{"health":"OK","name":"'"$_fullname"'","id":"'"$_name"'","msg":"'"$_msg"'"}'; fi
 	                        echo $(date +%s) > "/tmp/telerising.status.$_name.ok"
 	                        rm -f "/tmp/telerising.status.$_name.fail"
 	                        rm -f "/tmp/telerising.status.$_name.unk"
@@ -124,7 +136,8 @@ do
 	                if [ ! -e "/tmp/telerising.status.$_name.unk" ]
 	                then
 	                        echo "telerising unknown error: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
-				if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"UNKNOWN","name":"'"$_fullname"'","id":"'"$_name"'"}'; fi
+				if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"UNKNOWN","name":"'"$_fullname"'","id":"'"$_name"'","msg":"'"$_msg"'"}'; fi
+				if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m '{"health":"UNKNOWN","name":"'"$_fullname"'","id":"'"$_name"'","msg":"'"$_msg"'"}'; fi
 	                        echo $(date +%s) > "/tmp/telerising.status.$_name.unk"
 				echo $_msg > "/tmp/telerising.msg.$_name"
 	                        rm -f "/tmp/telerising.status.$_name.ok"
