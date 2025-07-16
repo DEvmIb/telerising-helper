@@ -25,3 +25,5 @@ if [ "$HEALTH_DISABLE" == "" ]; then screen -dmS healt-check bash -c 'while :; d
 
 screen -dmS socat bash -c 'while :; do socat -v -d -d TCP-LISTEN:3000,crlf,reuseaddr,fork SYSTEM:"bash /usr/local/bin/health-socat.sh" ; sleep 10; done'
 screen -dmS socat bash -c 'while :; do socat -v -d -d TCP-LISTEN:3001,crlf,reuseaddr,fork SYSTEM:"bash /usr/local/bin/health-socat-html.sh" ; sleep 10; done'
+
+sleep infinity
