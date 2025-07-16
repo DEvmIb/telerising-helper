@@ -4,6 +4,8 @@ echo "HTTP/1.1 200 OK"
 echo "Content-Type: text/html"
 echo
 
+echo '<meta name="viewport" content="width=device-width, initial-scale=1">'
+
 _providers=/telerising/app/static/json/providers.json
 
 _red='#bd3333'
