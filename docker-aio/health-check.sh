@@ -6,7 +6,7 @@ _pro_state=""
 _idle=300
 _hook="$HEALTH_HOOK"
 _mqtt_host="$HEALTH_MQTT_HOST"
-_mqtt_port="$HEALTH_MQTT_PORT"
+_mqtt_port="${HEALTH_MQTT_PORT-1883}"
 _mqtt_topic="$HEALTH_MQTT_TOPIC"
 _mqtt_enabled=0
 
