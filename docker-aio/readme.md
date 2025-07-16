@@ -15,15 +15,20 @@
 | TRUPDATE            | Y     |         | Y        | Update Telerising on Docker restart   |
 | HEALTH_INT          | num   | 300     | Y        | healthcheck interval, seconds         |       
 | HEALTH_HOOK         | URL   |         | Y        | Post HEALTH Status to this URL        |
+| HEALTH_HOOK_TYPE    | J/T   | J       | Y        | send json or text message             |
 | HEALTH_MQTT_HOST    | HOST  |         | Y        | mqtt hostname                         |
 | HEALTH_MQTT_PORT    | PORT  | 1883    | Y        | optional, mqqt port                   |
 | HEALTH_MQTT_TOPIC   | TOPIC |         | Y        | send to this topic                    |
+| HEALTH_MQTT_TYPE    | J/T   | J       | Y        | send json or text message             |
 | HEALTH_MATRIX_URL   | URL   |         | Y        | matrix server url                     |
 | HEALTH_MATRIX_ROOM  | ID    |         | Y        | matrix room send message to           |
 | HEALTH_MATRIX_TOKEN | TOK   |         | Y        | you matrix token                      |
+| HEALTH_MATRIX_TYPE  | J/T   | J       | Y        | send json or text message             |
+| HEALTH_KODI_URL     | URL   |         | Y        | only T type is send, without /jsonrpc |
 | http_proxy          | URL   |         | Y        | useful if you want to use telerising  |
 | https_proxy         | URL   |         | Y        | his new proxy feature and route all   |
 |                     |       |         |          | traffic through a proxy server        |
+
 ## Volumes
 
 | Volume      | Description        |
@@ -81,7 +86,21 @@ curl -s http://telerising:3000|jq
   "time_human": "Wed Jul 16 18:10:53 CEST 2025"
 }
 ```
-
+### Push
+* telerising, easyepg status
+```
+{"health":"ERROR","name":"easyepg","id":"easyepg"}
+```
+```
+{"health":"OK","name":"telerising","id":"telerising"}
+```
+* Provider
+```
+{"health":"ERROR","name":"Zattoo CH","id":"zch","msg":"wrong country"}
+```
+```
+{"health":"OK","name":"Zattoo CH","id":"zch","msg":""}
+```
 ### Web Status
 ```
 http://telerising:3001

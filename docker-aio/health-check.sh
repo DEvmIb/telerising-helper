@@ -1,11 +1,14 @@
 #!/bin/bash
 
-# todo: format json for http matrix
+# todo: escape json for http matrix
+# todo: text escaping anywhere needed?
 
 _set=/telerising/settings.json
 _pro=/telerising/app/static/json/providers.json
 _pro_state=""
+
 _idle=${HEALTH_INT-300}
+
 _hook="$HEALTH_HOOK"
 _hook_type="${HEALTH_HOOK_TYP:-J}"
 
@@ -18,6 +21,8 @@ _matrix_url=$HEALTH_MATRIX_URL
 _matrix_room=$HEALTH_MATRIX_ROOM
 _matrix_token=HEALTH_MATRIX_TOKEN
 _matrix_type="${HEALTH_MATRIX_TYP:-J}"
+
+_kodi_url=$HEALTH_KODI_URL
 
 _mqtt_enabled=0
 _matrix_enabled=0
@@ -78,6 +83,7 @@ do
 			_msg_type[T]="easyepg down: on host ($(hostname))"
 			_msg_type[J]='{"health":"ERROR","name":"easyepg","id":"easyepg"}'
                         echo "easyepg down: on host ($(hostname))"
+			if [ ! "$_kodi_url" == "" ]; then curl -X POST -H 'Content-Type: application/json' -i $_kodi_url/jsonrpc --data '{"jsonrpc":"2.0","id":0,"method":"GUI.ShowNotification","params":{"title":"HealthCheck","message":"${_msg_type[T]}","displaytime":3000}}'; fi
                         if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d "${_msg_type[$_hook_type]}"; fi
 			if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m "${_msg_type[$_mqtt_type]}"; fi
 			if [ $_matrix_enabled -eq 1 ]; then curl -d '{"msgtype":"m.text", "body":"${_msg_type[$_matrix_type]}"}' "https://$_matrix_url/_matrix/client/r0/rooms/$_matrix_room/send/m.room.message?access_token=$_matrix_token"; fi
@@ -90,6 +96,7 @@ do
 			_msg_type[T]="easyepg up: on host ($(hostname))"
 			_msg_type[J]='{"health":"OK","name":"easyepg","id":"easyepg"}'
                         echo "easyepg up: on host ($(hostname))"
+			if [ ! "$_kodi_url" == "" ]; then curl -X POST -H 'Content-Type: application/json' -i $_kodi_url/jsonrpc --data '{"jsonrpc":"2.0","id":0,"method":"GUI.ShowNotification","params":{"title":"HealthCheck","message":"${_msg_type[T]}","displaytime":3000}}'; fi
                         if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d "${_msg_type[$_hook_type]}"; fi
 			if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m "${_msg_type[$_mqtt_type]}"; fi
 			if [ $_matrix_enabled -eq 1 ]; then curl -d '{"msgtype":"m.text", "body":"${_msg_type[$_matrix_type]}"}' "https://$_matrix_url/_matrix/client/r0/rooms/$_matrix_room/send/m.room.message?access_token=$_matrix_token"; fi
@@ -106,6 +113,7 @@ do
 			_msg_type[T]="telerising down: on host ($(hostname))"
 			_msg_type[J]='{"health":"ERROR","name":"telersing","id":"telerising"}'
 			echo "telerising down: on host ($(hostname))"
+			if [ ! "$_kodi_url" == "" ]; then curl -X POST -H 'Content-Type: application/json' -i $_kodi_url/jsonrpc --data '{"jsonrpc":"2.0","id":0,"method":"GUI.ShowNotification","params":{"title":"HealthCheck","message":"${_msg_type[T]}","displaytime":3000}}'; fi
 			if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d "${_msg_type[$_hook_type]}"; fi
 			if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m "${_msg_type[$_mqtt_type]}"; fi
 			if [ $_matrix_enabled -eq 1 ]; then curl -d '{"msgtype":"m.text", "body":"${_msg_type[$_matrix_type]}"}' "https://$_matrix_url/_matrix/client/r0/rooms/$_matrix_room/send/m.room.message?access_token=$_matrix_token"; fi
@@ -121,6 +129,7 @@ do
 			_msg_type[T]="telerising up: on host ($(hostname))"
 			_msg_type[J]='{"health":"OK","name":"telersing","id":"telerising"}'
 			echo "telerising up: on host ($(hostname))"
+			if [ ! "$_kodi_url" == "" ]; then curl -X POST -H 'Content-Type: application/json' -i $_kodi_url/jsonrpc --data '{"jsonrpc":"2.0","id":0,"method":"GUI.ShowNotification","params":{"title":"HealthCheck","message":"${_msg_type[T]}","displaytime":3000}}'; fi
 			if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d "${_msg_type[$_hook_type]}"; fi
 			if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m "${_msg_type[$_mqtt_type]}"; fi
 			if [ $_matrix_enabled -eq 1 ]; then curl -d '{"msgtype":"m.text", "body":"${_msg_type[$_matrix_type]}"}' "https://$_matrix_url/_matrix/client/r0/rooms/$_matrix_room/send/m.room.message?access_token=$_matrix_token"; fi
@@ -147,6 +156,7 @@ do
 				_msg_type[T]="telerising error: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
 				_msg_type[J]='{"health":"ERROR","name":"'"$_fullname"'","id":"'"$_name"'","msg":"'"$_msg"'"}'
 	                        echo "telerising error: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
+				if [ ! "$_kodi_url" == "" ]; then curl -X POST -H 'Content-Type: application/json' -i $_kodi_url/jsonrpc --data '{"jsonrpc":"2.0","id":0,"method":"GUI.ShowNotification","params":{"title":"HealthCheck","message":"${_msg_type[T]}","displaytime":3000}}'; fi
 				if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d "${_msg_type[$_hook_type]}"; fi
 				if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m "${_msg_type[$_mqtt_type]}"; fi
 				if [ $_matrix_enabled -eq 1 ]; then curl -d '{"msgtype":"m.text", "body":"${_msg_type[$_matrix_type]}"}' "https://$_matrix_url/_matrix/client/r0/rooms/$_matrix_room/send/m.room.message?access_token=$_matrix_token"; fi
@@ -162,6 +172,7 @@ do
 				_msg_type[T]="telerising ok: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
 				_msg_type[J]='{"health":"OK","name":"'"$_fullname"'","id":"'"$_name"'","msg":"'"$_msg"'"}'
 	                        echo "telerising ok: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
+				if [ ! "$_kodi_url" == "" ]; then curl -X POST -H 'Content-Type: application/json' -i $_kodi_url/jsonrpc --data '{"jsonrpc":"2.0","id":0,"method":"GUI.ShowNotification","params":{"title":"HealthCheck","message":"${_msg_type[T]}","displaytime":3000}}'; fi
 				if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d "${_msg_type[$_hook_type]}"; fi
 				if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m "${_msg_type[$_mqtt_type]}"; fi
 				if [ $_matrix_enabled -eq 1 ]; then curl -d '{"msgtype":"m.text", "body":"${_msg_type[$_matrix_type]}"}' "https://$_matrix_url/_matrix/client/r0/rooms/$_matrix_room/send/m.room.message?access_token=$_matrix_token"; fi
@@ -176,6 +187,7 @@ do
 				_msg_type[T]="telerising unknown error: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
 				_msg_type[J]='{"health":"UNKNOWN","name":"'"$_fullname"'","id":"'"$_name"'","msg":"'"$_msg"'"}'
 	                        echo "telerising unknown error: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
+				if [ ! "$_kodi_url" == "" ]; then curl -X POST -H 'Content-Type: application/json' -i $_kodi_url/jsonrpc --data '{"jsonrpc":"2.0","id":0,"method":"GUI.ShowNotification","params":{"title":"HealthCheck","message":"${_msg_type[T]}","displaytime":3000}}'; fi
 				if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d "${_msg_type[$_hook_type]}"; fi
 				if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m "${_msg_type[$_mqtt_type]}"; fi
 				if [ $_matrix_enabled -eq 1 ]; then curl -d '{"msgtype":"m.text", "body":"${_msg_type[$_matrix_type]}"}' "https://$_matrix_url/_matrix/client/r0/rooms/$_matrix_room/send/m.room.message?access_token=$_matrix_token"; fi
