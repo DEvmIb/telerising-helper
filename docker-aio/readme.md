@@ -8,8 +8,11 @@
 
 | Key               | Value | Description                         |
 |-------------------|-------|-------------------------------------|
-| TRUPDATE          | Y     | Update Telerising on Docker restart.|
-| HEALTH_HOOK       | URL   | Post HEALTH Status to this URL.     |
+| TR_DISABLE        | any   | if set, telerising is disabled      |
+| EPG_DISABLE       | any   | if set, easyepg is disabled         |
+| HEALTH_DISABLE    | any   | if set, healthcheck is disabled     |
+| TRUPDATE          | Y     | Update Telerising on Docker restart |
+| HEALTH_HOOK       | URL   | Post HEALTH Status to this URL      |
 | HEALTH_MQTT_HOST  | HOST  | mqtt hostname                       |
 | HEALTH_MQTT_PORT  | PORT  | mqqt port                           |
 | HEALTH_MQTT_TOPIC | TOPIC | send to this topic                  |
