@@ -73,4 +73,4 @@ curl -s http://telerising:3000|jq
 ```
 http://telerising:3001
 ```
-![what](telerising status check.png)
+![what](telerising-status-check.png)
