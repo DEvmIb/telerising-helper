@@ -31,11 +31,11 @@ else
 	echo '"telerising":{"state":"down"},'
 fi
 
-if [ -e /tmp/easyepg.up ] && [ $(ps auxww|grep '[p]ython main.py$'|wc -l) -eq 1 ]
+if [ $(ps auxww|grep '[p]ython main.py$'|wc -l) -eq 0 ] || [ -e /tmp/easyepg.status.fail ]
 then
-        echo '"easyepg":{"state":"up","since":"'"$(cat /tmp/easyepg.up)"'","since_human":"'"$(date -d @$(cat /tmp/easyepg.up))"'"},'
+	echo '"easyepg":{"state":"down"},'
 else
-        echo '"easyepg":{"state":"down"},'
+	echo '"easyepg":{"state":"up","since":"'"$(cat /tmp/easyepg.up)"'","since_human":"'"$(date -d @$(cat /tmp/easyepg.up))"'"},'
 fi
 
 while read _state

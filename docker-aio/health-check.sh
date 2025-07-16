@@ -35,9 +35,9 @@ done
 
 while :
 do
-	_port=$(jq -r '.basic|select(.port!=null)|.port' "$_set")
+	_port=$(jq -r '.basic|select(.port!=null)|.port' "$_set" 2>/dev/null)
 	_port=${_port:-5000}
-	_pass=$(jq -r '.basic|select(.password!=null)|.password' "$_set")
+	_pass=$(jq -r '.basic|select(.password!=null)|.password' "$_set" 2>/dev/null)
 	if [ "$_pass" == "" ]
 	then
 		# no pass set atm waiting
@@ -45,7 +45,28 @@ do
 		continue
 	fi
 	_pro_db_build
-	curl -s -b /tmp/check-cookies.cookies -c /tmp/check-cookies.cookies "http://127.0.0.1:$_port/api/login_check" --data-raw "pw=$_pass" >/dev/null
+
+        curl -s "http://127.0.0.1:4000" &>/dev/null
+        if [ $? -ne 0 ]
+        then
+                if [ ! -e "/tmp/easyepg.status.fail" ]
+                then
+                        echo "easyepg down: on host ($(hostname))"
+                        if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"ERROR","name":"easyepg","id":"easyepg"}'; fi
+                        rm -f /tmp/easyepg.status.ok
+                        echo $(date +%s) > /tmp/easyepg.status.fail
+                fi
+        else
+                if [ ! -e "/tmp/easyepg.status.ok" ]
+                then
+                        echo "easyepg up: on host ($(hostname))"
+                        if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"OK","name":"easyepg","id":"easyepg"}'; fi
+                        echo $(date +%s) > /tmp/easyepg.status.ok
+                        rm -f /tmp/easyepg.status.fail
+                fi
+        fi
+
+	curl -s -b /tmp/check-cookies.cookies -c /tmp/check-cookies.cookies "http://127.0.0.1:$_port/api/login_check" --data-raw "pw=$_pass" &>/dev/null
 	if [ $? -ne 0 ]
 	then
 		if [ ! -e "/tmp/telerising.status.fail" ]

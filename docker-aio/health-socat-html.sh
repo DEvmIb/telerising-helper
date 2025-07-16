@@ -5,7 +5,6 @@ echo "Content-Type: text/html"
 echo
 
 _providers=/telerising/app/static/json/providers.json
-_json=""
 
 _red='#bd3333'
 _green='#4a9e39'
@@ -26,11 +25,9 @@ do
 done < <(jq -cr 'keys[] as $k | $k+" "+(.[$k].name|tostring)' "$_providers")
 
 
-_json+='{"code":0,"msg":"health check working",'
 
 if [ -e /tmp/telerising.status.ok ] && [ $(ps auxww|grep '[0-9]\s[.]/ld-.*\s\./api$'|wc -l) -eq 1 ]
 then
-	#_json+='"telerising":{"state":"up","since":"'"$(cat /tmp/telerising.up)"'","since_human":"'"$(date -d @$(cat /tmp/telerising.up))"'"},'
 	echo '
 	<center>
 	<table class="ck-table-resized" style="height: 110px;" width="372"><caption style="background:'"$_green"'"><strong>Telerising</strong></caption><colgroup><col style="width: 23.57%;" /><col style="width: 76.43%;" /></colgroup>
@@ -126,11 +123,7 @@ do
         </table>
         </center>
         '
-	#_json+='"'"$_id"'":{"state":"'"$_state_service"'","name":"'"$_name"'","since":"'"$(cat $_state)"'","since_human":"'"$(date -d @$(cat $_state))"'"},'
 done < <(ls /tmp/telerising.status.*.*)
 
-_json+='"time":"'"$(date +%s)"'","time_human":"'"$(date)"'"'
-
-_json+="}"
 
 
