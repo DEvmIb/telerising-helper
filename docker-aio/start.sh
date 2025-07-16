@@ -24,3 +24,4 @@ screen -dmS telerising bash -c 'while :; do date +%s > /tmp/telerising.up; wget 
 screen -dmS healt-check bash -c 'while :; do date +%s > /tmp/health-check.up; /usr/local/bin/health-check.sh >> /tmp/health-check.log 2>&1; sleep 10; done'
 
 screen -dmS socat bash -c 'while :; do socat -v -d -d TCP-LISTEN:3000,crlf,reuseaddr,fork SYSTEM:"bash /usr/local/bin/health-socat.sh" ; sleep 10; done'
+screen -dmS socat bash -c 'while :; do socat -v -d -d TCP-LISTEN:3001,crlf,reuseaddr,fork SYSTEM:"bash /usr/local/bin/health-socat-html.sh" ; sleep 10; done'

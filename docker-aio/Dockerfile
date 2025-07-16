@@ -7,12 +7,14 @@ LABEL maintainer="Ad0lar <ad0lar.pasture129@passmail.net>" \
 COPY start.sh /usr/local/bin/start.sh
 COPY health-check.sh /usr/local/bin/health-check.sh
 COPY health-socat.sh /usr/local/bin/health-socat.sh
+COPY health-socat-html.sh /usr/local/bin/health-socat-html.sh
 
 COPY qemu-* /usr/bin
 
 RUN chmod +x /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/health-check.sh
 RUN chmod +x /usr/local/bin/health-socat.sh
+RUN chmod +x /usr/local/bin/health-socat-html.sh
 
 ENTRYPOINT [ "/usr/local/bin/start.sh" ]
 

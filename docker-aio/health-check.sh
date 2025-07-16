@@ -53,6 +53,7 @@ do
 			echo "telerising down: on host ($(hostname))"
 			if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"ERROR","name":"telersing","id":"telerising"}'; fi
 			rm -f /tmp/telerising.status.ok
+			rm -f /tmp/telerising.status.*.*
 			echo $(date +%s) > /tmp/telerising.status.fail
 		fi
 		sleep 60
@@ -83,6 +84,7 @@ do
 	                        echo "telerising error: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
 				if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"ERROR","name":"'"$_fullname"'","id":"'"$_name"'"}'; fi
 	                        echo $(date +%s) > "/tmp/telerising.status.$_name.fail"
+				echo $_msg > "/tmp/telerising.msg.$_name"
 	                        rm -f "/tmp/telerising.status.$_name.ok"
 	                        rm -f "/tmp/telerising.status.$_name.unk"
 	                fi
@@ -95,6 +97,7 @@ do
 	                        echo $(date +%s) > "/tmp/telerising.status.$_name.ok"
 	                        rm -f "/tmp/telerising.status.$_name.fail"
 	                        rm -f "/tmp/telerising.status.$_name.unk"
+				rm -f "/tmp/telerising.msg.$_name"
 	                fi
 	        else
 	                if [ ! -e "/tmp/telerising.status.$_name.unk" ]
@@ -102,6 +105,7 @@ do
 	                        echo "telerising unknown error: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
 				if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"UNKNOWN","name":"'"$_fullname"'","id":"'"$_name"'"}'; fi
 	                        echo $(date +%s) > "/tmp/telerising.status.$_name.unk"
+				echo $_msg > "/tmp/telerising.msg.$_name"
 	                        rm -f "/tmp/telerising.status.$_name.ok"
 	                        rm -f "/tmp/telerising.status.$_name.fail"
 	                fi
