@@ -1,18 +1,36 @@
 #!/bin/bash
 
+# todo: format json for http matrix
+
 _set=/telerising/settings.json
 _pro=/telerising/app/static/json/providers.json
 _pro_state=""
 _idle=${HEALTH_INT-300}
 _hook="$HEALTH_HOOK"
+_hook_type="${HEALTH_HOOK_TYP:-J}"
+
 _mqtt_host="$HEALTH_MQTT_HOST"
 _mqtt_port="${HEALTH_MQTT_PORT-1883}"
 _mqtt_topic="$HEALTH_MQTT_TOPIC"
+_mqtt_type="${HEALTH_MQTT_TYP:-J}"
+
+_matrix_url=$HEALTH_MATRIX_URL
+_matrix_room=$HEALTH_MATRIX_ROOM
+_matrix_token=HEALTH_MATRIX_TOKEN
+_matrix_type="${HEALTH_MATRIX_TYP:-J}"
+
 _mqtt_enabled=0
+_matrix_enabled=0
+
+if [[ ! "$_hook_type" =~ [JT] ]]; then _hook_type=J; fi
+if [[ ! "$_mqtt_type" =~ [JT] ]]; then _mqtt_type=J; fi
+if [[ ! "$_matrix_type" =~ [JT] ]]; then _matrix_type=J; fi
 
 if [ ! "$_mqtt_host" == "" ] && [ ! "$_mqtt_port" == "" ] && [ ! "$_mqtt_topic" == "" ]; then _mqtt_enabled=1; fi
+if [ ! "$_matrix_url" == "" ] && [ ! "$_matrix_room" == "" ] && [ ! "$_matrix_token" == "" ]; then _matrix_enabled=1; fi
 
 declare -A _pro_db
+declare -A _msg_type
 
 #prividers id to name db build
 function _pro_db_build {
@@ -57,18 +75,24 @@ do
         then
                 if [ ! -e "/tmp/easyepg.status.fail" ]
                 then
+			_msg_type[T]="easyepg down: on host ($(hostname))"
+			_msg_type[J]='{"health":"ERROR","name":"easyepg","id":"easyepg"}'
                         echo "easyepg down: on host ($(hostname))"
-                        if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"ERROR","name":"easyepg","id":"easyepg"}'; fi
-			if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m '{"health":"ERROR","name":"easyepg","id":"easyepg"}'; fi
+                        if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d "${_msg_type[$_hook_type]}"; fi
+			if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m "${_msg_type[$_mqtt_type]}"; fi
+			if [ $_matrix_enabled -eq 1 ]; then curl -d '{"msgtype":"m.text", "body":"${_msg_type[$_matrix_type]}"}' "https://$_matrix_url/_matrix/client/r0/rooms/$_matrix_room/send/m.room.message?access_token=$_matrix_token"; fi
                         rm -f /tmp/easyepg.status.ok
                         echo $(date +%s) > /tmp/easyepg.status.fail
                 fi
         else
                 if [ ! -e "/tmp/easyepg.status.ok" ]
                 then
+			_msg_type[T]="easyepg up: on host ($(hostname))"
+			_msg_type[J]='{"health":"OK","name":"easyepg","id":"easyepg"}'
                         echo "easyepg up: on host ($(hostname))"
-                        if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"OK","name":"easyepg","id":"easyepg"}'; fi
-			if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m '{"health":"OK","name":"easyepg","id":"easyepg"}'; fi
+                        if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d "${_msg_type[$_hook_type]}"; fi
+			if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m "${_msg_type[$_mqtt_type]}"; fi
+			if [ $_matrix_enabled -eq 1 ]; then curl -d '{"msgtype":"m.text", "body":"${_msg_type[$_matrix_type]}"}' "https://$_matrix_url/_matrix/client/r0/rooms/$_matrix_room/send/m.room.message?access_token=$_matrix_token"; fi
                         echo $(date +%s) > /tmp/easyepg.status.ok
                         rm -f /tmp/easyepg.status.fail
                 fi
@@ -79,9 +103,12 @@ do
 	then
 		if [ ! -e "/tmp/telerising.status.fail" ]
 		then
+			_msg_type[T]="telerising down: on host ($(hostname))"
+			_msg_type[J]='{"health":"ERROR","name":"telersing","id":"telerising"}'
 			echo "telerising down: on host ($(hostname))"
-			if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"ERROR","name":"telersing","id":"telerising"}'; fi
-			if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m '{"health":"ERROR","name":"telersing","id":"telersing"}'; fi
+			if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d "${_msg_type[$_hook_type]}"; fi
+			if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m "${_msg_type[$_mqtt_type]}"; fi
+			if [ $_matrix_enabled -eq 1 ]; then curl -d '{"msgtype":"m.text", "body":"${_msg_type[$_matrix_type]}"}' "https://$_matrix_url/_matrix/client/r0/rooms/$_matrix_room/send/m.room.message?access_token=$_matrix_token"; fi
 			rm -f /tmp/telerising.status.ok
 			rm -f /tmp/telerising.status.*.*
 			echo $(date +%s) > /tmp/telerising.status.fail
@@ -91,9 +118,12 @@ do
 	else
 		if [ ! -e "/tmp/telerising.status.ok" ]
 		then
+			_msg_type[T]="telerising up: on host ($(hostname))"
+			_msg_type[J]='{"health":"OK","name":"telersing","id":"telerising"}'
 			echo "telerising up: on host ($(hostname))"
-			if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"OK","name":"telersing","id":"telerising"}'; fi
-			if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m '{"health":"OK","name":"telersing","id":"telersing"}'; fi
+			if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d "${_msg_type[$_hook_type]}"; fi
+			if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m "${_msg_type[$_mqtt_type]}"; fi
+			if [ $_matrix_enabled -eq 1 ]; then curl -d '{"msgtype":"m.text", "body":"${_msg_type[$_matrix_type]}"}' "https://$_matrix_url/_matrix/client/r0/rooms/$_matrix_room/send/m.room.message?access_token=$_matrix_token"; fi
 			echo $(date +%s) > /tmp/telerising.status.ok
 			rm -f /tmp/telerising.status.fail
 		fi
@@ -114,9 +144,12 @@ do
 	        then
 	                if [ ! -e "/tmp/telerising.status.$_name.fail" ]
 	                then
+				_msg_type[T]="telerising error: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
+				_msg_type[J]='{"health":"ERROR","name":"'"$_fullname"'","id":"'"$_name"'","msg":"'"$_msg"'"}'
 	                        echo "telerising error: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
-				if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"ERROR","name":"'"$_fullname"'","id":"'"$_name"'","msg":"'"$_msg"'"}'; fi
-				if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m '{"health":"ERROR","name":"'"$_fullname"'","id":"'"$_name"'","msg":"'"$_msg"'"}'; fi
+				if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d "${_msg_type[$_hook_type]}"; fi
+				if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m "${_msg_type[$_mqtt_type]}"; fi
+				if [ $_matrix_enabled -eq 1 ]; then curl -d '{"msgtype":"m.text", "body":"${_msg_type[$_matrix_type]}"}' "https://$_matrix_url/_matrix/client/r0/rooms/$_matrix_room/send/m.room.message?access_token=$_matrix_token"; fi
 	                        echo $(date +%s) > "/tmp/telerising.status.$_name.fail"
 				echo $_msg > "/tmp/telerising.msg.$_name"
 	                        rm -f "/tmp/telerising.status.$_name.ok"
@@ -126,9 +159,12 @@ do
 	        then
 	                if [ ! -e "/tmp/telerising.status.$_name.ok" ]
 	                then
+				_msg_type[T]="telerising ok: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
+				_msg_type[J]='{"health":"OK","name":"'"$_fullname"'","id":"'"$_name"'","msg":"'"$_msg"'"}'
 	                        echo "telerising ok: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
-				if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"OK","name":"'"$_fullname"'","id":"'"$_name"'","msg":"'"$_msg"'"}'; fi
-				if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m '{"health":"OK","name":"'"$_fullname"'","id":"'"$_name"'","msg":"'"$_msg"'"}'; fi
+				if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d "${_msg_type[$_hook_type]}"; fi
+				if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m "${_msg_type[$_mqtt_type]}"; fi
+				if [ $_matrix_enabled -eq 1 ]; then curl -d '{"msgtype":"m.text", "body":"${_msg_type[$_matrix_type]}"}' "https://$_matrix_url/_matrix/client/r0/rooms/$_matrix_room/send/m.room.message?access_token=$_matrix_token"; fi
 	                        echo $(date +%s) > "/tmp/telerising.status.$_name.ok"
 	                        rm -f "/tmp/telerising.status.$_name.fail"
 	                        rm -f "/tmp/telerising.status.$_name.unk"
@@ -137,9 +173,12 @@ do
 	        else
 	                if [ ! -e "/tmp/telerising.status.$_name.unk" ]
 	                then
+				_msg_type[T]="telerising unknown error: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
+				_msg_type[J]='{"health":"UNKNOWN","name":"'"$_fullname"'","id":"'"$_name"'","msg":"'"$_msg"'"}'
 	                        echo "telerising unknown error: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
-				if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"UNKNOWN","name":"'"$_fullname"'","id":"'"$_name"'","msg":"'"$_msg"'"}'; fi
-				if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m '{"health":"UNKNOWN","name":"'"$_fullname"'","id":"'"$_name"'","msg":"'"$_msg"'"}'; fi
+				if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d "${_msg_type[$_hook_type]}"; fi
+				if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m "${_msg_type[$_mqtt_type]}"; fi
+				if [ $_matrix_enabled -eq 1 ]; then curl -d '{"msgtype":"m.text", "body":"${_msg_type[$_matrix_type]}"}' "https://$_matrix_url/_matrix/client/r0/rooms/$_matrix_room/send/m.room.message?access_token=$_matrix_token"; fi
 	                        echo $(date +%s) > "/tmp/telerising.status.$_name.unk"
 				echo $_msg > "/tmp/telerising.msg.$_name"
 	                        rm -f "/tmp/telerising.status.$_name.ok"

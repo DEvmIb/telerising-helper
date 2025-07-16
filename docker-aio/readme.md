@@ -6,19 +6,24 @@
 
 ## ENV Variables
 
-| Key               | Value | Default | Description                         |
-|-------------------|-------|---------|-------------------------------------|
-| TZ                | any   |         | example: Europe/Berlin              |
-| TR_DISABLE        | any   |         | if set, telerising is disabled      |
-| EPG_DISABLE       | any   |         | if set, easyepg is disabled         |
-| HEALTH_DISABLE    | any   |         | if set, healthcheck is disabled     |
-| TRUPDATE          | Y     |         | Update Telerising on Docker restart |
-| HEALTH_INT        | num   | 300     | healthcheck interval, seconds       |       
-| HEALTH_HOOK       | URL   |         | Post HEALTH Status to this URL      |
-| HEALTH_MQTT_HOST  | HOST  |         | mqtt hostname                       |
-| HEALTH_MQTT_PORT  | PORT  | 1883    | optional, mqqt port                 |
-| HEALTH_MQTT_TOPIC | TOPIC |         | send to this topic                  |
-
+| Key                 | Value | Default | Optional | Description                           |
+|---------------------|-------|---------|----------|---------------------------------------|
+| TZ                  | any   |         | Y        | example: Europe/Berlin                |
+| TR_DISABLE          | any   |         | Y        | if set, telerising is disabled        |
+| EPG_DISABLE         | any   |         | Y        | if set, easyepg is disabled           |
+| HEALTH_DISABLE      | any   |         | Y        | if set, healthcheck is disabled       |
+| TRUPDATE            | Y     |         | Y        | Update Telerising on Docker restart   |
+| HEALTH_INT          | num   | 300     | Y        | healthcheck interval, seconds         |       
+| HEALTH_HOOK         | URL   |         | Y        | Post HEALTH Status to this URL        |
+| HEALTH_MQTT_HOST    | HOST  |         | Y        | mqtt hostname                         |
+| HEALTH_MQTT_PORT    | PORT  | 1883    | Y        | optional, mqqt port                   |
+| HEALTH_MQTT_TOPIC   | TOPIC |         | Y        | send to this topic                    |
+| HEALTH_MATRIX_URL   | URL   |         | Y        | matrix server url                     |
+| HEALTH_MATRIX_ROOM  | ID    |         | Y        | matrix room send message to           |
+| HEALTH_MATRIX_TOKEN | TOK   |         | Y        | you matrix token                      |
+| http_proxy          | URL   |         | Y        | useful if you want to use telerising  |
+| https_proxy         | URL   |         | Y        | his new proxy feature and route all   |
+|                     |       |         |          | traffic through a proxy server        |
 ## Volumes
 
 | Volume      | Description        |
