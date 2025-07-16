@@ -4,6 +4,7 @@
 #  - test busybox working
 #  - use proot on termux when installed
 
+export PYTHONUNBUFFERED=1
 _mirror=https://raw.githubusercontent.com/DEvmIb/telerising-helper/refs/heads/main
 _sub=
 _user=telerising-script
