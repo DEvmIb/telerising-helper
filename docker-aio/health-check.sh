@@ -3,7 +3,7 @@
 _set=/telerising/settings.json
 _pro=/telerising/app/static/json/providers.json
 _pro_state=""
-_idle=300
+_idle=${HEALTH_INT-300}
 _hook="$HEALTH_HOOK"
 _mqtt_host="$HEALTH_MQTT_HOST"
 _mqtt_port="${HEALTH_MQTT_PORT-1883}"

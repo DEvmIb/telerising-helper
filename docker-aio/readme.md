@@ -6,17 +6,18 @@
 
 ## ENV Variables
 
-| Key               | Value | Description                         |
-|-------------------|-------|-------------------------------------|
-| TZ                | any   | example: Europe/Berlin              |
-| TR_DISABLE        | any   | if set, telerising is disabled      |
-| EPG_DISABLE       | any   | if set, easyepg is disabled         |
-| HEALTH_DISABLE    | any   | if set, healthcheck is disabled     |
-| TRUPDATE          | Y     | Update Telerising on Docker restart |
-| HEALTH_HOOK       | URL   | Post HEALTH Status to this URL      |
-| HEALTH_MQTT_HOST  | HOST  | mqtt hostname                       |
-| HEALTH_MQTT_PORT  | PORT  | optional, mqqt port                 |
-| HEALTH_MQTT_TOPIC | TOPIC | send to this topic                  |
+| Key               | Value | Default | Description                         |
+|-------------------|-------|---------|-------------------------------------|
+| TZ                | any   |         | example: Europe/Berlin              |
+| TR_DISABLE        | any   |         | if set, telerising is disabled      |
+| EPG_DISABLE       | any   |         | if set, easyepg is disabled         |
+| HEALTH_DISABLE    | any   |         | if set, healthcheck is disabled     |
+| TRUPDATE          | Y     |         | Update Telerising on Docker restart |
+| HEALTH_INT        | num   | 300     | healthcheck interval, seconds       |       
+| HEALTH_HOOK       | URL   |         | Post HEALTH Status to this URL      |
+| HEALTH_MQTT_HOST  | HOST  |         | mqtt hostname                       |
+| HEALTH_MQTT_PORT  | PORT  | 1883    | optional, mqqt port                 |
+| HEALTH_MQTT_TOPIC | TOPIC |         | send to this topic                  |
 
 ## Volumes
 
