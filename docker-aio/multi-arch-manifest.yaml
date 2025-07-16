@@ -1,25 +1,25 @@
-image: ad0lar/telerising-alpine:latest
+image: ad0lar/telerising-aio:latest
 manifests:
-  - image: ad0lar/telerising-alpine:amd64
+  - image: ad0lar/telerising-aio:amd64
     platform:
       architecture: amd64
       os: linux
-  - image: ad0lar/telerising-alpine:arm32v6
+  - image: ad0lar/telerising-aio:arm32v6
     platform:
       architecture: arm
       os: linux
       variant: v6
-  - image: ad0lar/telerising-alpine:arm32v7
+  - image: ad0lar/telerising-aio:arm32v7
     platform:
       architecture: arm
       os: linux
       variant: v7
-  - image: ad0lar/telerising-alpine:arm32v8
+  - image: ad0lar/telerising-aio:arm32v8
     platform:
       architecture: arm
       os: linux
       variant: v8
-  - image: ad0lar/telerising-alpine:arm64
+  - image: ad0lar/telerising-aio:arm64
     platform:
       architecture: arm
       os: linux

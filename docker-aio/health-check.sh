@@ -45,27 +45,29 @@ do
 		continue
 	fi
 	_pro_db_build
-	curl -s -b /tmp/check-cookies-$_port.cookies -c /tmp/check-cookies-$_port.cookies "http://127.0.0.1:$_port/api/login_check" --data-raw "pw=$_pass" >/dev/null
+	curl -s -b /tmp/check-cookies.cookies -c /tmp/check-cookies.cookies "http://127.0.0.1:$_port/api/login_check" --data-raw "pw=$_pass" >/dev/null
 	if [ $? -ne 0 ]
 	then
 		if [ ! -e "/tmp/telerising.status.fail" ]
 		then
-			echo "telerising down: on host ($(hostname):$_port)"
+			echo "telerising down: on host ($(hostname))"
 			if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"ERROR","name":"telersing","id":"telerising"}'; fi
 			rm -f /tmp/telerising.status.ok
+			echo $(date +%s) > /tmp/telerising.status.fail
 		fi
 		sleep 60
 		continue
 	else
 		if [ ! -e "/tmp/telerising.status.ok" ]
-			echo "telerising up: on host ($(hostname):$_port)"
+		then
+			echo "telerising up: on host ($(hostname))"
 			if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"OK","name":"telersing","id":"telerising"}'; fi
+			echo $(date +%s) > /tmp/telerising.status.ok
 			rm -f /tmp/telerising.status.fail
 		fi
 	fi
-	_data=$(curl -s -b /tmp/check-cookies-$_port.cookies -c /tmp/check-cookies-$_port.cookies "http://127.0.0.1:$_port"|grep 'var test =')
+	_data=$(curl -s -b /tmp/check-cookies.cookies -c /tmp/check-cookies.cookies "http://127.0.0.1:$_port"|grep 'var test =')
 	_data=${_data:15}
-	echo "$_data"|jq -cr
 	while read -r _line
 	do
 	        IFS='|' read -ra _data <<<"$_line"
@@ -74,35 +76,34 @@ do
 	        _success=${_data[1]}
 	        _status=${_data[2]}
 	        _msg=${_data[3]}
-	        echo $_name - ${_status:-$_success} - $_msg
 	        if [ "$_success" == "false" ] || [ "$_status" == "ERROR" ]
 	        then
-	                if [ ! -e "/tmp/telerising.status.$_port.$_name.fail" ]
+	                if [ ! -e "/tmp/telerising.status.$_name.fail" ]
 	                then
-	                        echo "telerising error: on host ($(hostname):$_port) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
+	                        echo "telerising error: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
 				if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"ERROR","name":"'"$_fullname"'","id":"'"$_name"'"}'; fi
-	                        touch "/tmp/telerising.status.$_port.$_name.fail"
-	                        rm -f "/tmp/telerising.status.$_port.$_name.ok"
-	                        rm -f "/tmp/telerising.status.$_port.$_name.unk"
+	                        echo $(date +%s) > "/tmp/telerising.status.$_name.fail"
+	                        rm -f "/tmp/telerising.status.$_name.ok"
+	                        rm -f "/tmp/telerising.status.$_name.unk"
 	                fi
 	        elif [ "$_success" == "true" ] || [ "$_status" == "OK" ]
 	        then
-	                if [ ! -e "/tmp/telerising.status.$_port.$_name.ok" ]
+	                if [ ! -e "/tmp/telerising.status.$_name.ok" ]
 	                then
-	                        echo "telerising ok: on host ($(hostname):$_port) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
+	                        echo "telerising ok: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
 				if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"OK","name":"'"$_fullname"'","id":"'"$_name"'"}'; fi
-	                        touch "/tmp/telerising.status.$_port.$_name.ok"
-	                        rm -f "/tmp/telerising.status.$_port.$_name.fail"
-	                        rm -f "/tmp/telerising.status.$_port.$_name.unk"
+	                        echo $(date +%s) > "/tmp/telerising.status.$_name.ok"
+	                        rm -f "/tmp/telerising.status.$_name.fail"
+	                        rm -f "/tmp/telerising.status.$_name.unk"
 	                fi
 	        else
-	                if [ ! -e "/tmp/telerising.status.$_port.$_name.unk" ]
+	                if [ ! -e "/tmp/telerising.status.$_name.unk" ]
 	                then
-	                        echo "telerising unknown error: on host ($(hostname):$_port) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
+	                        echo "telerising unknown error: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
 				if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d '{"health":"UNKNOWN","name":"'"$_fullname"'","id":"'"$_name"'"}'; fi
-	                        touch "/tmp/telerising.status.$_port.$_name.unk"
-	                        rm -f "/tmp/telerising.status.$_port.$_name.ok"
-	                        rm -f "/tmp/telerising.status.$_port.$_name.fail"
+	                        echo $(date +%s) > "/tmp/telerising.status.$_name.unk"
+	                        rm -f "/tmp/telerising.status.$_name.ok"
+	                        rm -f "/tmp/telerising.status.$_name.fail"
 	                fi
 	        fi
 	#done < <(echo "$_data"|jq -cr 'keys[] as $k | $k')

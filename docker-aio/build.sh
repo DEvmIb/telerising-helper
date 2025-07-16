@@ -24,30 +24,30 @@ if [ $? -ne 0 ]; then echo err tar qemu-5.2.0.balena4-aarch64.tar.gz; rm -f qemu
 rm -f qemu-5.2.0.balena4-arm.tar.gz
 rm -f qemu-5.2.0.balena4-aarch64.tar.gz
 
-docker build -t ad0lar/telerising-alpine:arm32v6 -f Dockerfile --platform="linux/arm/v6" .
+docker build -t ad0lar/telerising-aio:arm32v6 -f Dockerfile --platform="linux/arm/v6" .
 if [ $? -ne 0 ]; then echo err build arm32v6; exit 1; fi
 
-docker build -t ad0lar/telerising-alpine:arm32v7 -f Dockerfile --platform="linux/arm/v7" .
+docker build -t ad0lar/telerising-aio:arm32v7 -f Dockerfile --platform="linux/arm/v7" .
 if [ $? -ne 0 ]; then echo err build arm32v7; exit 1; fi
 
-docker build -t ad0lar/telerising-alpine:arm32v8 -f Dockerfile --platform="linux/arm/v8" .
+docker build -t ad0lar/telerising-aio:arm32v8 -f Dockerfile --platform="linux/arm/v8" .
 if [ $? -ne 0 ]; then echo err build arm32v8; exit 1; fi
 
-docker build -t ad0lar/telerising-alpine:amd64 -f Dockerfile --platform="linux/amd64" .
+docker build -t ad0lar/telerising-aio:amd64 -f Dockerfile --platform="linux/amd64" .
 if [ $? -ne 0 ]; then echo err build amd64; exit 1; fi
 
-docker build -t ad0lar/telerising-alpine:arm64 -f Dockerfile --platform="linux/arm64" .
+docker build -t ad0lar/telerising-aio:arm64 -f Dockerfile --platform="linux/arm64" .
 if [ $? -ne 0 ]; then echo err build arm64; exit 1; fi
 
 curl -Lo manifest-tool https://github.com/estesp/manifest-tool/releases/download/v0.9.0/manifest-tool-linux-amd64
 if [ $? -ne 0 ]; then err dl manifest; rm -f manifest-tool; exit 1; fi
 chmod +x manifest-tool
 
-docker push ad0lar/telerising-alpine:amd64
-docker push ad0lar/telerising-alpine:arm32v6
-docker push ad0lar/telerising-alpine:arm32v7
-docker push ad0lar/telerising-alpine:arm32v8
-docker push ad0lar/telerising-alpine:arm64
+docker push ad0lar/telerising-aio:amd64
+docker push ad0lar/telerising-aio:arm32v6
+docker push ad0lar/telerising-aio:arm32v7
+docker push ad0lar/telerising-aio:arm32v8
+docker push ad0lar/telerising-aio:arm64
 
 ./manifest-tool push from-spec multi-arch-manifest.yaml
 if [ $? -ne 0 ]; then err manifest; rm -f manifest-tool; exit 1; fi
