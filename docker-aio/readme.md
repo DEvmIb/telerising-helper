@@ -22,9 +22,13 @@
 | HEALTH_MQTT_TYPE    | J/T   | J       | Y        | send json or text message             |
 | HEALTH_MATRIX_URL   | URL   |         | Y        | matrix server url                     |
 | HEALTH_MATRIX_ROOM  | ID    |         | Y        | matrix room send message to           |
-| HEALTH_MATRIX_TOKEN | TOK   |         | Y        | you matrix token                      |
+| HEALTH_MATRIX_TOKEN | TXT   |         | Y        | you matrix token                      |
 | HEALTH_MATRIX_TYPE  | J/T   | J       | Y        | send json or text message             |
 | HEALTH_KODI_URL     | URL   |         | Y        | only T type is send, without /jsonrpc |
+| HEALTH_INFLUX_URL   | URL   |         | Y        | http://influx/api/v2/write            |
+| HEALTH_INFLUX_BUCK  | TXT   |         | Y        | bucket name                           |
+| HEALTH_INFLUX_ORG   | TXT   |         | Y        | organization name                     |
+| HEALTH_INFLUX_TOKEN | TXT   |         | Y        | user token                            |
 | http_proxy          | URL   |         | Y        | useful if you want to use telerising  |
 | https_proxy         | URL   |         | Y        | his new proxy feature and route all   |
 |                     |       |         |          | traffic through a proxy server        |

@@ -24,8 +24,13 @@ _matrix_type="${HEALTH_MATRIX_TYP:-J}"
 
 _kodi_url=$HEALTH_KODI_URL
 
+_influx_url=$HEALTH_INFLUX_URL
+_influx_bucket=$HEALTH_INFLUX_BUCK
+_influx_org=$HEALTH_INFLUX_ORG
+
 _mqtt_enabled=0
 _matrix_enabled=0
+_influx_enabled=0
 
 if [[ ! "$_idle" =~ ^[0-9]+$ ]]; then _idle=300; fi
 
@@ -33,6 +38,7 @@ if [[ ! "$_hook_type" =~ [JT] ]]; then _hook_type=J; fi
 if [[ ! "$_mqtt_type" =~ [JT] ]]; then _mqtt_type=J; fi
 if [[ ! "$_matrix_type" =~ [JT] ]]; then _matrix_type=J; fi
 
+if [ ! "$_influx_url" == "" ] && [ ! "$_influx_bucket" == "" ] && [ ! "$_influx_org" == "" ] && [ ! "$_influx_token" == "" ]; then _influx_enabled=1; fi
 if [ ! "$_mqtt_host" == "" ] && [ ! "$_mqtt_port" == "" ] && [ ! "$_mqtt_topic" == "" ]; then _mqtt_enabled=1; fi
 if [ ! "$_matrix_url" == "" ] && [ ! "$_matrix_room" == "" ] && [ ! "$_matrix_token" == "" ]; then _matrix_enabled=1; fi
 
