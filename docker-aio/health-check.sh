@@ -74,7 +74,7 @@ do
                 fi
         fi
 
-	curl -s -b /tmp/check-cookies.cookies -c /tmp/check-cookies.cookies "http://127.0.0.1:$_port/api/login_check" --data-raw "pw=$_pass" &>/dev/null
+	curl -s "http://127.0.0.1:$_port" &>/dev/null
 	if [ $? -ne 0 ]
 	then
 		if [ ! -e "/tmp/telerising.status.fail" ]
@@ -98,6 +98,8 @@ do
 			rm -f /tmp/telerising.status.fail
 		fi
 	fi
+
+	curl -s -b /tmp/check-cookies.cookies -c /tmp/check-cookies.cookies "http://127.0.0.1:$_port/api/login_check" --data-raw "pw=$_pass" &>/dev/null
 	_data=$(curl -s -b /tmp/check-cookies.cookies -c /tmp/check-cookies.cookies "http://127.0.0.1:$_port"|grep 'var test =')
 	_data=${_data:15}
 	while read -r _line
