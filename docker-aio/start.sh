@@ -1,6 +1,6 @@
 #!/bin/sh
 export PYTHONUNBUFFERED=1
-apk add --no-cache bash py3-bottle py3-requests py3-xmltodict git jq curl
+apk add --no-cache bash py3-bottle py3-requests py3-xmltodict git jq curl screen
 
 mkdir -p /telerising
 mkdir -p /easyepg
@@ -17,8 +17,8 @@ tail -n0 -F /easyepg/easyepg.log /telerising/telerising.log /telerising/exceptio
 
 screen -wipe
 
-screen -dmS easyepg bash -c 'while :; do python main.py >> /easyepg/easyepg.log 2>&1; sleep 10; done'
+screen -dmS easyepg bash -c 'while :; do date +%s > /tmp/easyepg.up; python main.py >> /easyepg/easyepg.log 2>&1; sleep 10; done'
 
-screen -dmS telerising bash -c 'while :; do wget -qO - https://raw.githubusercontent.com/DEvmIb/telerising-helper/refs/heads/main/api.sh|exec bash -s -- /telerising >> /telerising/telerising.log 2>&1; sleep 10; done'
+screen -dmS telerising bash -c 'while :; do date +%s > /tmp/telerising.up; wget -qO - https://raw.githubusercontent.com/DEvmIb/telerising-helper/refs/heads/main/api.sh|exec bash -s -- /telerising >> /telerising/telerising.log 2>&1; sleep 10; done'
 
 
