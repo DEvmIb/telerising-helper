@@ -8,6 +8,7 @@
 
 | Key               | Value | Description                         |
 |-------------------|-------|-------------------------------------|
+| TZ                | any   | example: Europe/Berlin              |
 | TR_DISABLE        | any   | if set, telerising is disabled      |
 | EPG_DISABLE       | any   | if set, easyepg is disabled         |
 | HEALTH_DISABLE    | any   | if set, healthcheck is disabled     |
