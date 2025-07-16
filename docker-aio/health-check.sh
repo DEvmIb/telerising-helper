@@ -1,10 +1,12 @@
 #!/bin/bash
 
-# todo: escape json for http matrix
-# todo: text escaping anywhere needed?
-# todo: email
-# todo: telegram curl
-# todo: the most important things are included and are enough for me for now. more on request
+# todo:
+#       dont wait providers if tr is disabled
+#       escape json for http matrix
+#       text escaping anywhere needed?
+#       email
+#       telegram curl
+#       the most important things are included and are enough for me for now. more on request
 
 _set=/telerising/settings.json
 _pro=/telerising/app/static/json/providers.json
