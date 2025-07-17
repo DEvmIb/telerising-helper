@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # todo:
-#       escape json for http matrix
+#       escape json in json for http matrix -- jq @json <<< "$_json"
 #       text escaping anywhere needed?
 #       email
 #       telegram curl
