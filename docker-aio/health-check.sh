@@ -108,12 +108,12 @@ do
 			_msg_type[T]="easyepg down: on host ($(hostname))"
 			_msg_type[J]='{"health":"ERROR","name":"easyepg","id":"easyepg"}'
                         echo "easyepg down: on host ($(hostname))"
-			if [ ! $_tg_enabled -eq 1 ]; curl -H 'Content-Type: application/json' -d '{"chat_id": "'"$_tg_target"'", "text": "'"${_msg_type[T]}"'"}' https://api.telegram.org/bot$_tg_token/sendMessage ; fi
-			if [ ! $_smtp_enabled -eq 1 ]; then email -f $_smtp_from -s "Healtcheck status" -r $_smtp_host -p $_smtp_port -n "$_smtp_from_n" beta@bunker.home <<< "${_msg_type[T]}"; fi
+			if [ $_tg_enabled -eq 1 ]; then curl -H 'Content-Type: application/json' -d '{"chat_id": "'"$_tg_target"'", "text": "'"${_msg_type[T]}"'"}' https://api.telegram.org/bot$_tg_token/sendMessage ; fi
+			if [ $_smtp_enabled -eq 1 ]; then email -f $_smtp_from -s "Healtcheck status" -r $_smtp_host -p $_smtp_port -n "$_smtp_from_n" beta@bunker.home <<< "${_msg_type[T]}"; fi
 			if [ $_influx_enabled -eq 1 ]; then curl -q -XPOST "http://$_influx_url?bucket=$_influx_bucket&precision=ns&org=$_influx_org" --header "Authorization: Token $_influx_token" --data-raw "easyepg,host=$(hostname) value=0 $(date +%s%N)"; fi
 			if [ ! "$_kodi_url" == "" ]; then curl -X POST -H 'Content-Type: application/json' -i $_kodi_url/jsonrpc --data '{"jsonrpc":"2.0","id":0,"method":"GUI.ShowNotification","params":{"title":"HealthCheck","message":"${_msg_type[T]}","displaytime":3000}}'; fi
                         if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d "${_msg_type[$_hook_type]}"; fi
-			if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m "${_msg_type[$_mqtt_type]}"; fi
+			if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -t "$_mqtt_topic" -m "${_msg_type[$_mqtt_type]}"; fi
 			if [ $_matrix_enabled -eq 1 ]; then curl -d '{"msgtype":"m.text", "body":"${_msg_type[$_matrix_type]}"}' "https://$_matrix_url/_matrix/client/r0/rooms/$_matrix_room/send/m.room.message?access_token=$_matrix_token"; fi
                         rm -f /tmp/easyepg.status.ok
                         echo $(date +%s) > /tmp/easyepg.status.fail
@@ -124,12 +124,12 @@ do
 			_msg_type[T]="easyepg up: on host ($(hostname))"
 			_msg_type[J]='{"health":"OK","name":"easyepg","id":"easyepg"}'
                         echo "easyepg up: on host ($(hostname))"
-			if [ ! $_tg_enabled -eq 1 ]; curl -H 'Content-Type: application/json' -d '{"chat_id": "'"$_tg_target"'", "text": "'"${_msg_type[T]}"'"}' https://api.telegram.org/bot$_tg_token/sendMessage ; fi
-			if [ ! $_smtp_enabled -eq 1 ]; then email -f $_smtp_from -s "Healtcheck status" -r $_smtp_host -p $_smtp_port -n "$_smtp_from_n" beta@bunker.home <<< "${_msg_type[T]}"; fi
+			if [ $_tg_enabled -eq 1 ]; then curl -H 'Content-Type: application/json' -d '{"chat_id": "'"$_tg_target"'", "text": "'"${_msg_type[T]}"'"}' https://api.telegram.org/bot$_tg_token/sendMessage ; fi
+			if [ $_smtp_enabled -eq 1 ]; then email -f $_smtp_from -s "Healtcheck status" -r $_smtp_host -p $_smtp_port -n "$_smtp_from_n" beta@bunker.home <<< "${_msg_type[T]}"; fi
 			if [ $_influx_enabled -eq 1 ]; then curl -q -XPOST "http://$_influx_url?bucket=$_influx_bucket&precision=ns&org=$_influx_org" --header "Authorization: Token $_influx_token" --data-raw "easyepg,host=$(hostname) value=1 $(date +%s%N)"; fi
 			if [ ! "$_kodi_url" == "" ]; then curl -X POST -H 'Content-Type: application/json' -i $_kodi_url/jsonrpc --data '{"jsonrpc":"2.0","id":0,"method":"GUI.ShowNotification","params":{"title":"HealthCheck","message":"${_msg_type[T]}","displaytime":3000}}'; fi
                         if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d "${_msg_type[$_hook_type]}"; fi
-			if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m "${_msg_type[$_mqtt_type]}"; fi
+			if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -t "$_mqtt_topic" -m "${_msg_type[$_mqtt_type]}"; fi
 			if [ $_matrix_enabled -eq 1 ]; then curl -d '{"msgtype":"m.text", "body":"${_msg_type[$_matrix_type]}"}' "https://$_matrix_url/_matrix/client/r0/rooms/$_matrix_room/send/m.room.message?access_token=$_matrix_token"; fi
                         echo $(date +%s) > /tmp/easyepg.status.ok
                         rm -f /tmp/easyepg.status.fail
@@ -144,12 +144,12 @@ do
 			_msg_type[T]="telerising down: on host ($(hostname))"
 			_msg_type[J]='{"health":"ERROR","name":"telersing","id":"telerising"}'
 			echo "telerising down: on host ($(hostname))"
-			if [ ! $_tg_enabled -eq 1 ]; curl -H 'Content-Type: application/json' -d '{"chat_id": "'"$_tg_target"'", "text": "'"${_msg_type[T]}"'"}' https://api.telegram.org/bot$_tg_token/sendMessage ; fi
-			if [ ! $_smtp_enabled -eq 1 ]; then email -f $_smtp_from -s "Healtcheck status" -r $_smtp_host -p $_smtp_port -n "$_smtp_from_n" beta@bunker.home <<< "${_msg_type[T]}"; fi
+			if [ $_tg_enabled -eq 1 ]; then curl -H 'Content-Type: application/json' -d '{"chat_id": "'"$_tg_target"'", "text": "'"${_msg_type[T]}"'"}' https://api.telegram.org/bot$_tg_token/sendMessage ; fi
+			if [ $_smtp_enabled -eq 1 ]; then email -f $_smtp_from -s "Healtcheck status" -r $_smtp_host -p $_smtp_port -n "$_smtp_from_n" beta@bunker.home <<< "${_msg_type[T]}"; fi
 			if [ $_influx_enabled -eq 1 ]; then curl -q -XPOST "http://$_influx_url?bucket=$_influx_bucket&precision=ns&org=$_influx_org" --header "Authorization: Token $_influx_token" --data-raw "telerising,host=$(hostname) value=0 $(date +%s%N)"; fi
 			if [ ! "$_kodi_url" == "" ]; then curl -X POST -H 'Content-Type: application/json' -i $_kodi_url/jsonrpc --data '{"jsonrpc":"2.0","id":0,"method":"GUI.ShowNotification","params":{"title":"HealthCheck","message":"${_msg_type[T]}","displaytime":3000}}'; fi
 			if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d "${_msg_type[$_hook_type]}"; fi
-			if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m "${_msg_type[$_mqtt_type]}"; fi
+			if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -t "$_mqtt_topic" -m "${_msg_type[$_mqtt_type]}"; fi
 			if [ $_matrix_enabled -eq 1 ]; then curl -d '{"msgtype":"m.text", "body":"${_msg_type[$_matrix_type]}"}' "https://$_matrix_url/_matrix/client/r0/rooms/$_matrix_room/send/m.room.message?access_token=$_matrix_token"; fi
 			rm -f /tmp/telerising.status.ok
 			rm -f /tmp/telerising.status.*.*
@@ -163,12 +163,12 @@ do
 			_msg_type[T]="telerising up: on host ($(hostname))"
 			_msg_type[J]='{"health":"OK","name":"telersing","id":"telerising"}'
 			echo "telerising up: on host ($(hostname))"
-			if [ ! $_tg_enabled -eq 1 ]; curl -H 'Content-Type: application/json' -d '{"chat_id": "'"$_tg_target"'", "text": "'"${_msg_type[T]}"'"}' https://api.telegram.org/bot$_tg_token/sendMessage ; fi
-			if [ ! $_smtp_enabled -eq 1 ]; then email -f $_smtp_from -s "Healtcheck status" -r $_smtp_host -p $_smtp_port -n "$_smtp_from_n" beta@bunker.home <<< "${_msg_type[T]}"; fi
+			if [ $_tg_enabled -eq 1 ]; then curl -H 'Content-Type: application/json' -d '{"chat_id": "'"$_tg_target"'", "text": "'"${_msg_type[T]}"'"}' https://api.telegram.org/bot$_tg_token/sendMessage ; fi
+			if [ $_smtp_enabled -eq 1 ]; then email -f $_smtp_from -s "Healtcheck status" -r $_smtp_host -p $_smtp_port -n "$_smtp_from_n" beta@bunker.home <<< "${_msg_type[T]}"; fi
 			if [ $_influx_enabled -eq 1 ]; then curl -q -XPOST "http://$_influx_url?bucket=$_influx_bucket&precision=ns&org=$_influx_org" --header "Authorization: Token $_influx_token" --data-raw "telerising,host=$(hostname) value=1 $(date +%s%N)"; fi
 			if [ ! "$_kodi_url" == "" ]; then curl -X POST -H 'Content-Type: application/json' -i $_kodi_url/jsonrpc --data '{"jsonrpc":"2.0","id":0,"method":"GUI.ShowNotification","params":{"title":"HealthCheck","message":"${_msg_type[T]}","displaytime":3000}}'; fi
 			if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d "${_msg_type[$_hook_type]}"; fi
-			if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m "${_msg_type[$_mqtt_type]}"; fi
+			if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -t "$_mqtt_topic" -m "${_msg_type[$_mqtt_type]}"; fi
 			if [ $_matrix_enabled -eq 1 ]; then curl -d '{"msgtype":"m.text", "body":"${_msg_type[$_matrix_type]}"}' "https://$_matrix_url/_matrix/client/r0/rooms/$_matrix_room/send/m.room.message?access_token=$_matrix_token"; fi
 			echo $(date +%s) > /tmp/telerising.status.ok
 			rm -f /tmp/telerising.status.fail
@@ -193,12 +193,12 @@ do
 				_msg_type[T]="telerising error: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
 				_msg_type[J]='{"health":"ERROR","name":"'"$_fullname"'","id":"'"$_name"'","msg":"'"$_msg"'"}'
 	                        echo "telerising error: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
-				if [ ! $_tg_enabled -eq 1 ]; curl -H 'Content-Type: application/json' -d '{"chat_id": "'"$_tg_target"'", "text": "'"${_msg_type[T]}"'"}' https://api.telegram.org/bot$_tg_token/sendMessage ; fi
-				if [ ! $_smtp_enabled -eq 1 ]; then email -f $_smtp_from -s "Healtcheck status" -r $_smtp_host -p $_smtp_port -n "$_smtp_from_n" beta@bunker.home <<< "${_msg_type[T]}"; fi
+				if [ $_tg_enabled -eq 1 ]; then curl -H 'Content-Type: application/json' -d '{"chat_id": "'"$_tg_target"'", "text": "'"${_msg_type[T]}"'"}' https://api.telegram.org/bot$_tg_token/sendMessage ; fi
+				if [ $_smtp_enabled -eq 1 ]; then email -f $_smtp_from -s "Healtcheck status" -r $_smtp_host -p $_smtp_port -n "$_smtp_from_n" beta@bunker.home <<< "${_msg_type[T]}"; fi
 				if [ $_influx_enabled -eq 1 ]; then curl -q -XPOST "http://$_influx_url?bucket=$_influx_bucket&precision=ns&org=$_influx_org" --header "Authorization: Token $_influx_token" --data-raw "$_name,host=$(hostname) value=0 $(date +%s%N)"; fi
 				if [ ! "$_kodi_url" == "" ]; then curl -X POST -H 'Content-Type: application/json' -i $_kodi_url/jsonrpc --data '{"jsonrpc":"2.0","id":0,"method":"GUI.ShowNotification","params":{"title":"HealthCheck","message":"${_msg_type[T]}","displaytime":3000}}'; fi
 				if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d "${_msg_type[$_hook_type]}"; fi
-				if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m "${_msg_type[$_mqtt_type]}"; fi
+				if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -t "$_mqtt_topic" -m "${_msg_type[$_mqtt_type]}"; fi
 				if [ $_matrix_enabled -eq 1 ]; then curl -d '{"msgtype":"m.text", "body":"${_msg_type[$_matrix_type]}"}' "https://$_matrix_url/_matrix/client/r0/rooms/$_matrix_room/send/m.room.message?access_token=$_matrix_token"; fi
 	                        echo $(date +%s) > "/tmp/telerising.status.$_name.fail"
 				echo $_msg > "/tmp/telerising.msg.$_name"
@@ -212,12 +212,12 @@ do
 				_msg_type[T]="telerising ok: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
 				_msg_type[J]='{"health":"OK","name":"'"$_fullname"'","id":"'"$_name"'","msg":"'"$_msg"'"}'
 	                        echo "telerising ok: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
-				if [ ! $_tg_enabled -eq 1 ]; curl -H 'Content-Type: application/json' -d '{"chat_id": "'"$_tg_target"'", "text": "'"${_msg_type[T]}"'"}' https://api.telegram.org/bot$_tg_token/sendMessage ; fi
-				if [ ! $_smtp_enabled -eq 1 ]; then email -f $_smtp_from -s "Healtcheck status" -r $_smtp_host -p $_smtp_port -n "$_smtp_from_n" beta@bunker.home <<< "${_msg_type[T]}"; fi
+				if [ $_tg_enabled -eq 1 ]; then curl -H 'Content-Type: application/json' -d '{"chat_id": "'"$_tg_target"'", "text": "'"${_msg_type[T]}"'"}' https://api.telegram.org/bot$_tg_token/sendMessage ; fi
+				if [ $_smtp_enabled -eq 1 ]; then email -f $_smtp_from -s "Healtcheck status" -r $_smtp_host -p $_smtp_port -n "$_smtp_from_n" beta@bunker.home <<< "${_msg_type[T]}"; fi
 				if [ $_influx_enabled -eq 1 ]; then curl -q -XPOST "http://$_influx_url?bucket=$_influx_bucket&precision=ns&org=$_influx_org" --header "Authorization: Token $_influx_token" --data-raw "$_name,host=$(hostname) value=2 $(date +%s%N)"; fi
 				if [ ! "$_kodi_url" == "" ]; then curl -X POST -H 'Content-Type: application/json' -i $_kodi_url/jsonrpc --data '{"jsonrpc":"2.0","id":0,"method":"GUI.ShowNotification","params":{"title":"HealthCheck","message":"${_msg_type[T]}","displaytime":3000}}'; fi
 				if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d "${_msg_type[$_hook_type]}"; fi
-				if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m "${_msg_type[$_mqtt_type]}"; fi
+				if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -t "$_mqtt_topic" -m "${_msg_type[$_mqtt_type]}"; fi
 				if [ $_matrix_enabled -eq 1 ]; then curl -d '{"msgtype":"m.text", "body":"${_msg_type[$_matrix_type]}"}' "https://$_matrix_url/_matrix/client/r0/rooms/$_matrix_room/send/m.room.message?access_token=$_matrix_token"; fi
 	                        echo $(date +%s) > "/tmp/telerising.status.$_name.ok"
 	                        rm -f "/tmp/telerising.status.$_name.fail"
@@ -230,12 +230,12 @@ do
 				_msg_type[T]="telerising unknown error: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
 				_msg_type[J]='{"health":"UNKNOWN","name":"'"$_fullname"'","id":"'"$_name"'","msg":"'"$_msg"'"}'
 	                        echo "telerising unknown error: on host ($(hostname)) id: $_name service: $_fullname status: ${_status:-$_success} message: $_msg"
-				if [ ! $_tg_enabled -eq 1 ]; curl -H 'Content-Type: application/json' -d '{"chat_id": "'"$_tg_target"'", "text": "'"${_msg_type[T]}"'"}' https://api.telegram.org/bot$_tg_token/sendMessage ; fi
-				if [ ! $_smtp_enabled -eq 1 ]; then email -f $_smtp_from -s "Healtcheck status" -r $_smtp_host -p $_smtp_port -n "$_smtp_from_n" beta@bunker.home <<< "${_msg_type[T]}"; fi
+				if [ $_tg_enabled -eq 1 ]; then curl -H 'Content-Type: application/json' -d '{"chat_id": "'"$_tg_target"'", "text": "'"${_msg_type[T]}"'"}' https://api.telegram.org/bot$_tg_token/sendMessage ; fi
+				if [ $_smtp_enabled -eq 1 ]; then email -f $_smtp_from -s "Healtcheck status" -r $_smtp_host -p $_smtp_port -n "$_smtp_from_n" beta@bunker.home <<< "${_msg_type[T]}"; fi
 				if [ $_influx_enabled -eq 1 ]; then curl -q -XPOST "http://$_influx_url?bucket=$_influx_bucket&precision=ns&org=$_influx_org" --header "Authorization: Token $_influx_token" --data-raw "$_name,host=$(hostname) value=1 $(date +%s%N)"; fi
 				if [ ! "$_kodi_url" == "" ]; then curl -X POST -H 'Content-Type: application/json' -i $_kodi_url/jsonrpc --data '{"jsonrpc":"2.0","id":0,"method":"GUI.ShowNotification","params":{"title":"HealthCheck","message":"${_msg_type[T]}","displaytime":3000}}'; fi
 				if [ ! "$_hook" == "" ]; then curl -s "$_hook" -d "${_msg_type[$_hook_type]}"; fi
-				if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -m "${_msg_type[$_mqtt_type]}"; fi
+				if [ $_mqtt_enabled -eq 1 ]; then mosquitto_pub -q 2 -h "$_mqtt_host" -p $_mqtt_port -t "$_mqtt_topic" -m "${_msg_type[$_mqtt_type]}"; fi
 				if [ $_matrix_enabled -eq 1 ]; then curl -d '{"msgtype":"m.text", "body":"${_msg_type[$_matrix_type]}"}' "https://$_matrix_url/_matrix/client/r0/rooms/$_matrix_room/send/m.room.message?access_token=$_matrix_token"; fi
 	                        echo $(date +%s) > "/tmp/telerising.status.$_name.unk"
 				echo $_msg > "/tmp/telerising.msg.$_name"
