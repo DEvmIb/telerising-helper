@@ -23,10 +23,10 @@ if [ "$EPG_DISABLE" == "" ]; then screen -dmS easyepg bash -c 'while :; do date 
 
 if [ "$TR_DISABLE" == "" ]; then screen -dmS telerising bash -c 'while :; do date +%s > /tmp/telerising.up; wget -qO - https://raw.githubusercontent.com/DEvmIb/telerising-helper/refs/heads/main/api.sh|exec bash -s -- /telerising >> /telerising/telerising.log 2>&1; sleep 10; done'; fi
 
-if [ "$HEALTH_DISABLE" == "" ]; then screen -dmS healt-check bash -c 'while :; do date +%s > /tmp/health-check.up; wget -qO - https://github.com/DEvmIb/telerising-helper/blob/main/docker-aio/health-check.sh|bash -s >> /tmp/health-check.log 2>&1; sleep 10; done'; fi
+if [ "$HEALTH_DISABLE" == "" ]; then screen -dmS healt-check bash -c 'while :; do date +%s > /tmp/health-check.up; wget -qO - https://raw.githubusercontent.com/DEvmIb/telerising-helper/refs/heads/main/docker-aio/health-check.sh|exec bash -s >> /tmp/health-check.log 2>&1; sleep 10; done'; fi
 
-wget -q https://github.com/DEvmIb/telerising-helper/blob/main/docker-aio/health-socat.sh -O /tmp/health-socat.sh
-wget -q https://github.com/DEvmIb/telerising-helper/blob/main/docker-aio/health-socat-html.sh -O /tmp/health-socat-html.sh
+wget -q https://raw.githubusercontent.com/DEvmIb/telerising-helper/refs/heads/main/docker-aio/health-socat.sh -O /tmp/health-socat.sh
+wget -q https://raw.githubusercontent.com/DEvmIb/telerising-helper/refs/heads/main/docker-aio/health-socat-html.sh -O /tmp/health-socat-html.sh
 
 chmod +x /tmp/health-socat.sh
 chmod +x /tmp/health-socat-html.sh
