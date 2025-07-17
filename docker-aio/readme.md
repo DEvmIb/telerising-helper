@@ -98,12 +98,24 @@ curl -s http://telerising:3000|jq
 ```
 {"health":"OK","name":"telerising","id":"telerising"}
 ```
+```
+telerising down: on host telerising
+```
+```
+easyepg up: on host telerising
+```
 * Provider
 ```
 {"health":"ERROR","name":"Zattoo CH","id":"zch","msg":"wrong country"}
 ```
 ```
 {"health":"OK","name":"Zattoo CH","id":"zch","msg":""}
+```
+```
+telerising error: on host telerising id: zch service: Zattoo status: ERROR message: login failed
+```
+```
+telerising ok: on host telerising id: zch service: Zattoo status: OK message:
 ```
 ### Web Status
 ```
