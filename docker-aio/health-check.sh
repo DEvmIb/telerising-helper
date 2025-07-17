@@ -70,6 +70,7 @@ function _pro_db_build {
 # waiting for providers json
 while :
 do
+	if [ ! "$TR_DISABLE == "" ]; then break; fi
 	if [ -e "$_pro" ]; then break; fi
 	sleep 10
 done
@@ -81,7 +82,7 @@ do
 	_port=$(jq -r '.basic|select(.port!=null)|.port' "$_set" 2>/dev/null)
 	_port=${_port:-5000}
 	_pass=$(jq -r '.basic|select(.password!=null)|.password' "$_set" 2>/dev/null)
-	if [ "$_pass" == "" ]
+	if [ "$_pass" == "" ] && [ ! "$TR_DISABLE == "" ]
 	then
 		# no pass set atm waiting
 		sleep 60
