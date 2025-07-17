@@ -29,6 +29,7 @@
 | HEALTH_INFLUX_BUCK  | TXT   |         | Y        | bucket name                           |
 | HEALTH_INFLUX_ORG   | TXT   |         | Y        | organization name                     |
 | HEALTH_INFLUX_TOKEN | TXT   |         | Y        | user token                            |
+|                     |       |         |          | 0=ERR, 1=UNK, 2=OK                    |
 | http_proxy          | URL   |         | Y        | useful if you want to use telerising  |
 | https_proxy         | URL   |         | Y        | his new proxy feature and route all   |
 |                     |       |         |          | traffic through a proxy server        |
