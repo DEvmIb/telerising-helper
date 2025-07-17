@@ -36,6 +36,8 @@
 | HEALTH_SMTP_FROM_N  | TXT   | check   | Y        | from name                             |
 | HEALTH_SMTP_TO      | TXT   |         | Y        | to e.g. tr@domain.com                 |
 |                     |       |         |          | send T only, no TLS                   |
+| HEALTH_TG_TOKEN     | TXT   |         | Y        | telegram bot token, T only            |
+| HEALTH_TG_TARGET    | TXT   |         | Y        | target id of user or chat             |
 | http_proxy          | URL   |         | Y        | useful if you want to use telerising  |
 | https_proxy         | URL   |         | Y        | his new proxy feature and route all   |
 |                     |       |         |          | traffic through a proxy server        |
