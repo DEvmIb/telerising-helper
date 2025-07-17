@@ -2,7 +2,7 @@
 export PYTHONUNBUFFERED=1
 export NO_PROXY=localhost,127.0.0.1,localhost.localdomain,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,fd00::/8,fe80::/8
 
-apk add --no-cache bash py3-bottle py3-requests py3-xmltodict git jq curl screen socat tzdata mosquitto-clients
+apk add --no-cache bash py3-bottle py3-requests py3-xmltodict git jq curl screen socat tzdata mosquitto-clients email
 
 mkdir -p /telerising
 mkdir -p /easyepg

@@ -30,6 +30,12 @@
 | HEALTH_INFLUX_ORG   | TXT   |         | Y        | organization name                     |
 | HEALTH_INFLUX_TOKEN | TXT   |         | Y        | user token                            |
 |                     |       |         |          | 0=ERR, 1=UNK, 2=OK                    |
+| HEALTH_SMTP_HOST    | TXT   |         | Y        | mail server address                   |
+| HEALTH_SMTP_PORT    | TXT   | 25      | Y        | mail server port                      |
+| HEALTH_SMTP_FROM    | TXT   |         | Y        | from e.g. healtcheck@domain.com       |
+| HEALTH_SMTP_FROM_N  | TXT   | check   | Y        | from name                             |
+| HEALTH_SMTP_TO      | TXT   |         | Y        | to e.g. tr@domain.com                 |
+|                     |       |         |          | send T only, no TLS                   |
 | http_proxy          | URL   |         | Y        | useful if you want to use telerising  |
 | https_proxy         | URL   |         | Y        | his new proxy feature and route all   |
 |                     |       |         |          | traffic through a proxy server        |
