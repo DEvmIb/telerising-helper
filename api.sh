@@ -510,7 +510,7 @@ fi
 
 if [ ! "$TR_COOKIES" == "" ]
 then
-	if [ -d cookie_files ]
+	if [ -d cookie_files ] && [ ! -L cookie_files ]
 	then
 		mv cookie_files cookie_files.$(date +%s%N)
 	fi
