@@ -228,7 +228,7 @@ function update {
 		if [ "${_del,,}" == "bin" ]; then continue; fi
 		if [ "${_del,,}" == "tzdata.zi" ]; then continue; fi
 		if [ "${_del,,}" == "zone1970.tab" ]; then continue; fi
-		if [ "${_del,,}" == "run..sh" ]; then continue; fi
+		if [ "${_del,,}" == "run.sh" ]; then continue; fi
 		rm -fr $_del
 	done < <(ls)
 	cp -r "$_api_path/"* .
