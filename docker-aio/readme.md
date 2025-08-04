@@ -10,6 +10,7 @@
 |---------------------|-------|---------|----------|---------------------------------------|
 | TZ                  | any   |         | Y        | example: Europe/Berlin                |
 | TR_VERSION          | ver   |         | Y        | force telerising version              |
+| TR_PROVIDERS        | path  |         | Y        | path to own providers.json            |
 | TR_DISABLE          | any   |         | Y        | if set, telerising is disabled        |
 | EPG_DISABLE         | any   |         | Y        | if set, easyepg is disabled           |
 | HEALTH_DISABLE      | any   |         | Y        | if set, healthcheck is disabled       |

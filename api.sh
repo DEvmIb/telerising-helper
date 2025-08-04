@@ -461,34 +461,40 @@ fi
 
 echo
 echo -n "install modified providers.json for waipu support? skipping in 5s. (y/N): "
-if [ $_auto -eq 1 ]
+if [ "$TR_PROVIDERS" == "" ] && [ -e "$TR_PROVIDERS" ]
 then
-	# docker auto
-	if [ ! -e providers.json ]
+	if [ $_auto -eq 1 ]
 	then
-		# nothing there. using our patched ver.
-		_install=y
+		# docker auto
+		if [ ! -e providers.json ]
+		then
+			# nothing there. using our patched ver.
+			_install=y
+		else
+			# user may have his own file put in
+			_install=n
+		fi
 	else
-		# user may have his own file put in
-		_install=n
+		read -n1 -t5 _install </dev/tty
 	fi
-else
-	read -n1 -t5 _install </dev/tty
-fi
-if [ "${_install,,}" == "y" ]
-then
-	echo installing
-	rm -f providers.json
-	dl providers.json
-	cp providers.json app/static/json/providers.json
-else
-	if [ -e providers.json ]
+	if [ "${_install,,}" == "y" ]
 	then
-		echo found previous downloaded provider.json.
+		echo installing
+		rm -f providers.json
+		dl providers.json
 		cp providers.json app/static/json/providers.json
 	else
-		echo "skipped"
+		if [ -e providers.json ]
+		then
+			echo found previous downloaded provider.json.
+			cp providers.json app/static/json/providers.json
+		else
+			echo "skipped"
+		fi
 	fi
+else
+	>&2 using "$TR_PROVIDERS"
+	cp "$TR_PROVIDERS" app/static/json/providers.json
 fi
 
 # hostname check
