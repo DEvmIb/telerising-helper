@@ -460,8 +460,7 @@ else
 fi
 
 echo
-echo -n "install modified providers.json for waipu support? skipping in 5s. (y/N): "
-if [ "$TR_PROVIDERS" == "" ] && [ -e "$TR_PROVIDERS" ]
+if [ "$TR_PROVIDERS" == "" ]
 then
 	if [ $_auto -eq 1 ]
 	then
@@ -475,6 +474,7 @@ then
 			_install=n
 		fi
 	else
+		echo -n "install modified providers.json for waipu support? skipping in 5s. (y/N): "
 		read -n1 -t5 _install </dev/tty
 	fi
 	if [ "${_install,,}" == "y" ]
@@ -495,6 +495,16 @@ then
 else
 	>&2 using "$TR_PROVIDERS"
 	cp "$TR_PROVIDERS" app/static/json/providers.json
+fi
+
+if [ ! "$TR_SETTINGS" == "" ]
+then
+	if [ -f settings.json ]
+	then
+		cp settings.json settings.json.$(date +%s%N)
+	fi
+	rm -f settings.json
+	ln -s "$TR_SETTINGS" settings.json
 fi
 
 # hostname check
