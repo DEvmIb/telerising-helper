@@ -646,6 +646,17 @@ else
 	mkdir -p proot-tmp
 	chmod 777 proot-tmp
 	export PROOT_TMP_DIR=proot-tmp
+
+	if [ ! "$TR_SETTINGS" ]
+	then
+		_proot_opts="--bind='$TR_SETTINGS':'$TR_SETTINGS'"
+	fi
+
+	if [ ! "$TR_COOKIES" ]
+	then
+		_proot_opts="$_proot_opts --bind='$TR_COOKIES':'$TR_COOKIES'"
+	fi
+
 	# if root then run under telerising-script
 	if [ $(./bin/id -u) -eq 0 ]
 	then
@@ -656,18 +667,18 @@ else
 		then
 			echo failed chown to $_user
 			echo trying as root
-			_proot_works=$(./bin/$_system-proot --kill-on-exit --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc ls "$_install_path" 2>/dev/null)
+			_proot_works=$(./bin/$_system-proot --kill-on-exit --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc $_proot_opts ls "$_install_path" 2>/dev/null)
 			if [ "$_proot_works" == "" ]
 			then
 				>&2 echo proot fail.
 				>&2 echo starting without proot. if this fail, then contact me with the output of the following lines.
 				./ld-* ./api
 			else
-				./bin/$_system-proot --kill-on-exit --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc ./ld-* ./api
+				./bin/$_system-proot --kill-on-exit --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc $_proot_opts ./ld-* ./api
 			fi
 		else
 			_su_works=$(./bin/su $_user -p -c "ls '$_install_path'" 2>/dev/null)
-			_proot_works=$(./bin/$_system-proot --kill-on-exit --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc ls "$_install_path" 2>/dev/null)
+			_proot_works=$(./bin/$_system-proot --kill-on-exit --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc $_proot_opts ls "$_install_path" 2>/dev/null)
 			if [ ! "$_su_works" == "" ] && [ ! "$_proot_works" == "" ]
 			then
 				>&2 echo su and proot seems to work.
@@ -682,7 +693,7 @@ else
 			then
 				>&2 echo proot seems to work but not su.
 				>&2 echo starting with proot only. if this fail, then contact me with the output of the following lines.
-				./bin/$_system-proot --kill-on-exit --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc ./ld-* ./api
+				./bin/$_system-proot --kill-on-exit --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc $_proot_opts ./ld-* ./api
 			else
 				>&2 echo proot and su not working on this system.
 				>&2 echo starting. if this fail, then contact me with the output of the following lines.
@@ -691,12 +702,12 @@ else
 		fi
 		./bin/deluser $_user &>/dev/null
 	else
-		_proot_works=$(./bin/$_system-proot --kill-on-exit --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc ls "$_install_path" 2>/dev/null)
+		_proot_works=$(./bin/$_system-proot --kill-on-exit --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc $_proot_opts ls "$_install_path" 2>/dev/null)
 		if [ ! "$_proot_works" == "" ]
 		then
 			>&2 echo proot seems to work.
 			>&2 echo starting. if this fail, then contact me with the output of the following lines.
-			./bin/$_system-proot --kill-on-exit --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc ./ld-* ./api
+			./bin/$_system-proot --kill-on-exit --bind=. --bind=.:/usr/share/zoneinfo --bind=.:/etc $_proot_opts ./ld-* ./api
 		else
 			>&2 echo proot not working on this system.
 			>&2 echo starting without proot. if this fail, then contact me with the output of the following lines.
