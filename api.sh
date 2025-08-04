@@ -14,7 +14,6 @@ _os=$(uname -o)
 _kernel=$(uname -s)
 _machine=$(uname -m)
 _termux_busybox=1.37.0
-
 # colors
 _c_red='\033[0;31m'
 _c_clear='\033[0m'
@@ -25,6 +24,11 @@ _kernel=${_kernel,,}
 _machine=${_machine,,}
 
 _api=api
+
+if [ "${TR_VERSION:0:1}" == "v" ]
+then
+	TR_VERSION=${TR_VERSION:1}
+fi
 
 if [ "$1" == "-d" ] || [ "$1" == "--devices" ]
 then
@@ -146,18 +150,35 @@ function dl {
 function update {
 	local _latest _ver _file _api_search _api_path _del _bin
 	_bin=$(dloader)
-	if [ "$_bin" == "curl" ]
+	if [ "$TR_VERSION" == "" ]
 	then
-		_latest=$($_bin -s https://api.github.com/repos/sunsettrack4/telerising-api/releases/latest 2>/dev/null)
+		if [ "$_bin" == "curl" ]
+		then
+			_latest=$($_bin -s https://api.github.com/repos/sunsettrack4/telerising-api/releases/latest 2>/dev/null)
+		else
+			_latest=$($_bin -qO - https://api.github.com/repos/sunsettrack4/telerising-api/releases/latest 2>/dev/null)
+		fi
+		if [[ ! "$_latest" =~ /releases/download/v([.0-9]+)/telerising-v[.0-9]+_$_system\.zip ]]
+		then
+			if [ ! -e "$_install_path/$_api" ]; then >&2 echo failed getting current version; exit 1; fi
+			>&2 echo update check failed
+			return
+		fi
 	else
-		_latest=$($_bin -qO - https://api.github.com/repos/sunsettrack4/telerising-api/releases/latest 2>/dev/null)
+		if [ "$_bin" == "curl" ]
+		then
+			_latest=$($_bin -s https://api.github.com/repos/sunsettrack4/telerising-api/releases 2>/dev/null)
+		else
+			_latest=$($_bin -qO - https://api.github.com/repos/sunsettrack4/telerising-api/releases 2>/dev/null)
+		fi
+		if [[ ! "$_latest" =~ /releases/download/v($_TR_VERSION)/telerising-v${TR_VERSION}_$_system\.zip ]]
+		then
+			if [ ! -e "$_install_path/$_api" ]; then >&2 echo failed getting current version; exit 1; fi
+			>&2 echo update check failed
+			return
+		fi
 	fi
-	if [[ ! "$_latest" =~ /releases/download/v([.0-9]+)/telerising-v[.0-9]+_$_system\.zip ]]
-	then
-		if [ ! -e "$_install_path/$_api" ]; then >&2 echo failed getting current version; exit 1; fi
-		>&2 echo update check failed
-		return
-	fi
+
 	_ver=${BASH_REMATCH[1]}
 	_file=telerising-v${_ver}_$_system.zip
 	if [ "$(cat installed.ver 2>/dev/null)" == "$_ver" ]
