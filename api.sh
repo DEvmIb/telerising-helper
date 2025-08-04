@@ -494,7 +494,7 @@ then
 		fi
 	fi
 else
-	>&2 using "$TR_PROVIDERS"
+	>&2 echo using "$TR_PROVIDERS"
 	cp "$TR_PROVIDERS" app/static/json/providers.json
 fi
 
