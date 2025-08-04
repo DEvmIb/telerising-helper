@@ -507,6 +507,16 @@ then
 	ln -s "$TR_SETTINGS" settings.json
 fi
 
+if [ ! "$TR_COOKIES" == "" ]
+then
+	if [ -d cookie_files ]
+	then
+		mv cookie_files cookie_files.$(date +%s%N)
+	fi
+	rm -f cookie_files
+	ln -s "$TR_COOKIES" cookie_files
+fi
+
 # hostname check
 echo
 if [ -e /etc/hosts ]

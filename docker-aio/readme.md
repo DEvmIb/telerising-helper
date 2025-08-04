@@ -12,6 +12,7 @@
 | TR_VERSION          | ver   |         | Y        | force telerising version              |
 | TR_PROVIDERS        | path  |         | Y        | path to own providers.json            |
 | TR_SETTINGS         | path  |         | Y        | path to settings.json                 |
+| TR_COOKIES          | path  |         | Y        | path to cookie_files                  |
 | TR_DISABLE          | any   |         | Y        | if set, telerising is disabled        |
 | EPG_DISABLE         | any   |         | Y        | if set, easyepg is disabled           |
 | HEALTH_DISABLE      | any   |         | Y        | if set, healthcheck is disabled       |
