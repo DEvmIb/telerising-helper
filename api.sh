@@ -171,7 +171,7 @@ function update {
 		else
 			_latest=$($_bin -qO - https://api.github.com/repos/sunsettrack4/telerising-api/releases 2>/dev/null)
 		fi
-		if [[ ! "$_latest" =~ /releases/download/v($_TR_VERSION)/telerising-v${TR_VERSION}_$_system\.zip ]]
+		if [[ ! "$_latest" =~ /releases/download/v($TR_VERSION)/telerising-v${TR_VERSION}_$_system\.zip ]]
 		then
 			if [ ! -e "$_install_path/$_api" ]; then >&2 echo failed getting current version; exit 1; fi
 			>&2 echo update check failed
