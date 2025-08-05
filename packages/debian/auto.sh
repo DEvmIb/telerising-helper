@@ -17,10 +17,8 @@ _cur=""
 _msg=""
 
 
-_count=0
 while read -r _line
 do
-if [ $_count -gt 3 ]; then break; fi
 	if [[ "$_line" =~ ^telerising-v([0-9.]+)_(.*)\.zip ]]
 	then
 		_ver=${BASH_REMATCH[1]}
@@ -37,9 +35,7 @@ if [ $_count -gt 3 ]; then break; fi
 			then
 				mv "telerising-$_ver-$_arch.deb" "$_ver"
 				git add "$_ver/telerising-$_ver-$_arch.deb"
-				_msg+=$(echo -e "telerising-$_ver-$_arch.deb\n")
-				echo "telerising-$_ver-$_arch.deb" >> "$_tmp/commit.txt"
-				_count=$((_count+1))
+				git commit -a -m "$_ver/telerising-$_ver-$_arch.deb"
 			else
 				touch "$_ver/telerising-$_ver-$_arch.failed"
 			fi
@@ -48,7 +44,6 @@ if [ $_count -gt 3 ]; then break; fi
 done < <(curl -s https://api.github.com/repos/sunsettrack4/telerising-api/releases |jq -r '.[]|.assets|.[]|.name')
 
 
-git commit -a -F "$_tmp/commit.txt"
 
 git push https://$_g_user:$_g_pass@$_g_url/$_g_user/telerising-helper
 rm -r "$_tmp"
