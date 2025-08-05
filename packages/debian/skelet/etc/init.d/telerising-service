@@ -1,0 +1,92 @@
+#!/bin/bash
+#
+# Telerising Service
+#
+# chkconfig: 345 99 01
+# description: Starts/Stops the Telerising Service.
+#
+### BEGIN INIT INFO
+# Provides: telerising-service
+# Required-Start: $network $local_fs sendsigs
+# Required-Stop: $network $local_fs sendsigs
+# Should-Start: $network $local_fs sendsigs
+# Should-Stop: $network $local_fs sendsigs
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: start/stop Telerising Service
+# Description: start/stop Telerising Service
+### END INIT INFO
+
+DAEMON=/usr/share/telerising-service/run.sh
+PIDDIR=/run
+PIDFILE="${PIDDIR}/telerising-service/run.pid"
+USER=telerising-service
+
+
+test -x "$DAEMON" || exit 0
+
+log_daemon_msg () {
+    echo $@
+}
+
+# Try to source LSB init functions to define LSB log_* functions.
+test ! -r /lib/lsb/init-functions ||
+        . /lib/lsb/init-functions
+
+start() {
+    echo start
+    log_daemon_msg "Starting Telerising Service "
+
+    if [ $(pgrep -f "^./ld-.* ./api$"|wc -l) -ne 0 ]
+    then
+        log_end_msg 1
+    else
+        if start-stop-daemon --user "$USER" --chuid "$USER" --start --quiet --oknodo --background --pidfile "$PIDFILE" --exec /bin/bash -- -c "$DAEMON > /tmp/telerising.log 2>&1" ; then
+            log_end_msg 0
+        else
+            log_end_msg 1
+        fi
+    fi
+}
+
+stop() {
+    if init_is_upstart; then
+        exit 0
+    fi
+
+    log_daemon_msg "Stopping Telerising Service: "
+    
+    for i in {1..30}
+    do
+        pgrep -f "^./ld-.* ./api$"|xargs -i kill {}
+        if [ $(pgrep -f "^./ld-.* ./api$"|wc -l) -eq 0 ]; then break; fi
+        sleep 1
+    done
+
+    if [ $(pgrep -f "^./ld-.* ./api$"|wc -l) -eq 0 ]
+    then
+        log_end_msg 0
+    else
+        log_end_msg 1
+    fi
+}
+
+case "$1" in
+    start)
+        start
+    ;;
+
+    stop)
+        stop
+    ;;
+
+    restart|reload|force-reload)
+        $0 stop
+        $0 start
+    ;;
+
+    *)
+        echo "Usage: $0 {start|stop|restart|reload|force-reload}"
+        exit 2
+    ;;
+esac

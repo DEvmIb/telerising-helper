@@ -1,0 +1,16 @@
+[Unit]
+Description=telerising-service
+After=network.target
+
+[Service]
+Type=simple
+PIDFile=/var/run/telerisng-service.pid
+ExecStart=/bin/bash /usr/share/telerising-service/run.sh
+Restart=always
+RestartSec=30
+TimeoutStartSec=30
+User=telerising-service
+WorkingDirectory=/usr/share/telerising-service
+
+[Install]
+WantedBy=multi-user.target

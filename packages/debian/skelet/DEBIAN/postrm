@@ -1,0 +1,9 @@
+#!/bin/bash
+
+_opt=/usr/share/telerising-service
+_etc=/etc/telerising-service
+_user=telerising-service
+
+
+
+exit 0

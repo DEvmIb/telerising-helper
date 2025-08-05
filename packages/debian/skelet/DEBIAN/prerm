@@ -1,0 +1,41 @@
+#!/bin/bash
+
+_opt=/usr/share/telerising-service
+_etc=/etc/telerising-service
+_user=telerising-service
+
+if hash systemctl &>/dev/null
+then
+	systemctl stop telerising-service.service
+elif [ -e /etc/init.d/telerising-service ]
+then
+	/etc/init.d/telerising-service stop
+fi
+
+if [ $(pgrep -f "^./ld-.* ./api$"|wc -l) -eq 1 ]
+then
+    _count=0
+    _force=""
+    for i in {1..30}
+    do
+        pgrep -f "^./ld-.* ./api$"|xargs -i kill $_force {}
+        if [ $(pgrep -f "^./ld-.* ./api$"|wc -l) -eq 0 ]; then break; fi
+        sleep 1
+        if [ $i -gt 14 ]
+        then
+            _force=-9
+        fi
+    done
+fi
+
+if [ $(pgrep -f "^./ld-.* ./api$"|wc -l) -ne 0 ]
+then
+    exit 1
+fi
+
+case $1 in
+    remove|purge)
+        rm -rf $_opt &>/dev/null
+        userdel $_user &>/dev/null
+    ;;
+esac

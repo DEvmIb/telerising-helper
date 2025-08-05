@@ -1,0 +1,2302 @@
+{
+
+  "zde":
+
+  {
+
+    "name": "Zattoo DE (Smart TV)",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "DE"
+    },
+
+    "info":
+
+    {
+      "domain": "zattoo.com",
+      "country": "DE",
+      "big_screen": true
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "vod_start_id": "vod_zattoo_webmobile",
+    "vod_start_args": {"type": "pages"},
+    "manifest_types":
+
+      {
+
+        "dash":  true,
+        "hls7":  true
+
+      }
+
+  },
+
+  "zd2":
+
+  {
+
+    "name": "Zattoo DE (Web/Mobile)",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "DE"
+    },
+
+    "info":
+
+    {
+      "domain": "zattoo.com",
+      "country": "DE",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "0",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "vod_start_id": "vod_zattoo_webmobile",
+    "vod_start_args": {"type": "pages"},
+    "manifest_types":
+
+      {
+
+        "dash":  true,
+        "hls7":  true
+
+      }
+
+  },
+
+  "zch":
+
+  {
+
+    "name": "Zattoo CH (Smart TV)",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "CH"
+    },
+
+    "info":
+
+    {
+      "domain": "zattoo.com",
+      "country": "CH",
+      "big_screen": true
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["21000", "8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "vod_start_id": "vod_zattoo_webmobile",
+    "vod_start_args": {"type": "pages"},
+    "manifest_types":
+
+      {
+
+        "dash":  true,
+        "hls7":  true
+
+      }
+
+  },
+
+  "zc2":
+
+  {
+
+    "name": "Zattoo CH (Web/Mobile)",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "CH"
+    },
+
+    "info":
+
+    {
+      "domain": "zattoo.com",
+      "country": "CH",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "0",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["21000", "8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "vod_start_id": "vod_zattoo_webmobile",
+    "vod_start_args": {"type": "pages"},
+    "manifest_types":
+
+      {
+
+        "dash":  true,
+        "hls7":  true
+
+      }
+
+  },
+
+  "zat":
+
+  {
+
+    "name": "Zattoo AT (Smart TV)",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "AT"
+    },
+
+    "info":
+
+    {
+      "domain": "zattoo.com",
+      "country": "AT",
+      "big_screen": true
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "vod_start_id": "vod_zattoo_webmobile",
+    "vod_start_args": {"type": "pages"},
+    "manifest_types":
+
+      {
+
+        "dash":  true,
+        "hls7":  true
+
+      }
+
+  },
+
+  "za2":
+
+  {
+
+    "name": "Zattoo AT (Web/Mobile)",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "AT"
+    },
+
+    "info":
+
+    {
+      "domain": "zattoo.com",
+      "country": "AT",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "0",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "vod_start_id": "vod_zattoo_webmobile",
+    "vod_start_args": {"type": "pages"},
+    "manifest_types":
+
+      {
+
+        "dash":  true,
+        "hls7":  true
+
+      }
+
+  },
+
+  "wpu":
+
+  {
+
+    "name": "waipu.tv (Smart TV) (1)",
+    "module": "waipu",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "id": "wpu",
+      "tenant": "waipu",
+      "verification_uri": "https://www.waipu.tv/anmelden"
+    },
+
+    "login_type": "device_code",
+    "login_required": "1",
+    "server_selectable": false,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2000"],
+    "dd_supported": true,
+ "ck_live_supported": true,
+    "ck_rec_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "wpu2":
+
+  {
+
+    "name": "waipu.tv (Smart TV) (2)",
+    "module": "waipu",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "id": "wpu2",
+      "tenant": "waipu",
+      "verification_uri": "https://www.waipu.tv/anmelden"
+    },
+
+    "login_type": "device_code",
+    "login_required": "1",
+    "server_selectable": false,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2000"],
+    "dd_supported": true,
+ "ck_live_supported": true,
+    "ck_rec_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "wpu3":
+
+  {
+
+    "name": "waipu.tv (Smart TV) (3)",
+    "module": "waipu",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "id": "wpu3",
+      "tenant": "waipu",
+      "verification_uri": "https://www.waipu.tv/anmelden"
+    },
+
+    "login_type": "device_code",
+    "login_required": "1",
+    "server_selectable": false,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2000"],
+    "dd_supported": true,
+ "ck_live_supported": true,
+    "ck_rec_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "wpu4":
+
+  {
+
+    "name": "waipu.tv (Smart TV) (4)",
+    "module": "waipu",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "id": "wpu4",
+      "tenant": "waipu",
+      "verification_uri": "https://www.waipu.tv/anmelden"
+    },
+
+    "login_type": "device_code",
+    "login_required": "1",
+    "server_selectable": false,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2000"],
+    "dd_supported": true,
+ "ck_live_supported": true,
+    "ck_rec_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "wpu5":
+
+  {
+
+    "name": "waipu.tv (Smart TV) (5)",
+    "module": "waipu",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "id": "wpu5",
+      "tenant": "waipu",
+      "verification_uri": "https://www.waipu.tv/anmelden"
+    },
+
+    "login_type": "device_code",
+    "login_required": "1",
+    "server_selectable": false,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2000"],
+    "dd_supported": true,
+ "ck_live_supported": true,
+    "ck_rec_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "wp2":
+
+  {
+
+    "name": "waipu.tv (Web/Mobile) (1)",
+    "module": "waipu",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "id": "wp2",
+      "tenant": "waipu"
+    },
+
+    "login_type": "email",
+    "cookie_upload_required": true,
+    "login_required": "0",
+    "server_selectable": false,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2000"],
+    "dd_supported": true,
+ "ck_live_supported": true,
+    "ck_rec_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "wp22":
+
+  {
+
+    "name": "waipu.tv (Web/Mobile) (2)",
+    "module": "waipu",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "id": "wp22",
+      "tenant": "waipu"
+    },
+
+    "login_type": "email",
+    "cookie_upload_required": true,
+    "login_required": "0",
+    "server_selectable": false,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2000"],
+    "dd_supported": true,
+ "ck_live_supported": true,
+    "ck_rec_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "wp23":
+
+  {
+
+    "name": "waipu.tv (Web/Mobile) (3)",
+    "module": "waipu",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "id": "wp23",
+      "tenant": "waipu"
+    },
+
+    "login_type": "email",
+    "cookie_upload_required": true,
+    "login_required": "0",
+    "server_selectable": false,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2000"],
+    "dd_supported": true,
+ "ck_live_supported": true,
+    "ck_rec_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "wp4":
+
+  {
+
+    "name": "waipu.tv (Web/Mobile) (4)",
+    "module": "waipu",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "id": "wp24",
+      "tenant": "waipu"
+    },
+
+    "login_type": "email",
+    "cookie_upload_required": true,
+    "login_required": "0",
+    "server_selectable": false,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2000"],
+    "dd_supported": true,
+ "ck_live_supported": true,
+    "ck_rec_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "wp5":
+
+  {
+
+    "name": "waipu.tv (Web/Mobile) (5)",
+    "module": "waipu",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "id": "wp25",
+      "tenant": "waipu"
+    },
+
+    "login_type": "email",
+    "cookie_upload_required": true,
+    "login_required": "0",
+    "server_selectable": false,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2000"],
+    "dd_supported": true,
+ "ck_live_supported": true,
+    "ck_rec_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "o2t":
+
+  {
+
+    "name": "o2 TV powered by waipu.tv (1)",
+    "module": "waipu",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "id": "o2t",
+      "tenant": "o2",
+      "verification_uri": "https://o2.de/tv-login"
+    },
+
+    "login_type": "device_code",
+    "login_required": "1",
+    "server_selectable": false,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2000"],
+    "dd_supported": true,
+"ck_live_supported": true,
+    "ck_rec_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "o2t2":
+
+  {
+
+    "name": "o2 TV powered by waipu.tv (2)",
+    "module": "waipu",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "id": "o2t2",
+      "tenant": "o2",
+      "verification_uri": "https://o2.de/tv-login"
+    },
+
+    "login_type": "device_code",
+    "login_required": "1",
+    "server_selectable": false,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2000"],
+    "dd_supported": true,
+"ck_live_supported": true,
+    "ck_rec_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "o2t3":
+
+  {
+
+    "name": "o2 TV powered by waipu.tv (3)",
+    "module": "waipu",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "id": "o2t3",
+      "tenant": "o2",
+      "verification_uri": "https://o2.de/tv-login"
+    },
+
+    "login_type": "device_code",
+    "login_required": "1",
+    "server_selectable": false,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2000"],
+    "dd_supported": true,
+"ck_live_supported": true,
+    "ck_rec_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "o2t4":
+
+  {
+
+    "name": "o2 TV powered by waipu.tv (4)",
+    "module": "waipu",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "id": "o2t4",
+      "tenant": "o2",
+      "verification_uri": "https://o2.de/tv-login"
+    },
+
+    "login_type": "device_code",
+    "login_required": "1",
+    "server_selectable": false,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2000"],
+    "dd_supported": true,
+"ck_live_supported": true,
+    "ck_rec_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "o2t5":
+
+  {
+
+    "name": "o2 TV powered by waipu.tv (5)",
+    "module": "waipu",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "id": "o2t5",
+      "tenant": "o2",
+      "verification_uri": "https://o2.de/tv-login"
+    },
+
+    "login_type": "device_code",
+    "login_required": "1",
+    "server_selectable": false,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2000"],
+    "dd_supported": true,
+"ck_live_supported": true,
+    "ck_rec_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "1u1":
+
+  {
+
+    "name": "1&1 TV",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "www.1und1.tv",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "y3o":
+
+  {
+
+    "name": "yallo.tv",
+    "module": "yallo",
+    "up_module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "wlm",
+      "country": "CH"
+    },
+
+    "login_type": "email_code",
+    "supports_refresh_token": true,
+    "login_required": "0",
+    "pin_required": false,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "anonymous_country_required": "CH",
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "ntv":
+
+  {
+
+    "name": "netstream TV",
+    "module": "netstream",
+
+    "epg":
+
+    {
+      "module": "n3o",
+      "country": "CH"
+    },
+
+    "info":
+
+    {
+      "domain": "netstream.tv",
+      "login": {"type": "x-token"}
+    },
+
+    "login_type": "email",
+    "login_required": "0",
+    "pin_required": false,
+    "server_selectable": false,
+    "available_qualities": ["8000", "5000", "1500"],
+    "dd_supported": true,
+    "anonymous_country_required": "CH",
+    "manifest_types":
+
+    {
+
+      "dash":  false,
+      "hls7":  true
+
+    }
+
+  },
+
+  "tvp":
+
+  {
+
+    "name": "GoodTV",
+    "module": "netstream",
+
+    "epg":
+
+    {
+      "module": "n3o",
+      "country": "CH"
+    },
+
+    "info":
+
+    {
+      "domain": "tv-plus.goodtv.ch",
+      "login": {"type": "x-token"}
+    },
+
+    "login_type": "email",
+    "login_required": "1",
+    "pin_required": false,
+    "server_selectable": false,
+    "available_qualities": ["8000", "5000", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  false,
+      "hls7":  true
+
+    }
+
+  },
+
+  "tby":
+
+  {
+
+    "name": "Teleboy",
+    "module": "teleboy",
+
+    "epg":
+
+    {
+      "module": "tby",
+      "country": "CH"
+    },
+
+    "login_type": "email",
+    "login_required": "0",
+    "pin_required": false,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "anonymous_country_required": "CH",
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "swc":
+
+  {
+
+    "name": "blue TV Air (Smart TV)",
+    "module": "bluetv",
+
+    "epg":
+
+    {
+      "module": "swc",
+      "country": "CH"
+    },
+
+    "info":
+
+    {
+      "2fa": false
+    },
+
+    "login_type": "email",
+    "login_required": "1",
+    "pin_required": false,
+    "server_selectable": false,
+    "available_qualities": ["21000", "8000", "5000", "2000"],
+    "dd_supported": true,
+    "manifest_types":
+
+      {
+
+        "dash":  true,
+        "hls7":  true
+
+      }
+
+
+  },
+
+  "sw2":
+
+  {
+
+    "name": "blue TV Air (Web/Mobile)",
+    "module": "bluetv",
+
+    "epg":
+
+    {
+      "module": "swc",
+      "country": "CH"
+    },
+
+    "info":
+
+    {
+      "2fa": true
+    },
+
+    "login_type": "email_pw_code",
+    "login_required": "1",
+    "pin_required": false,
+    "server_selectable": false,
+    "supports_refresh_token": true,
+    "available_qualities": ["5000", "2000", "1500"],
+    "dd_supported": false,
+    "manifest_types":
+
+      {
+
+        "dash":  true,
+        "hls7":  true
+
+      }
+
+
+  },
+
+
+  "sky":
+
+  {
+
+    "name": "Sky Switzerland",
+    "module": "skych_stv",
+    "up_module": "skych",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "id": "sky"
+    },
+
+    "login_type": "email",
+    "login_required": "0",
+    "pin_required": false,
+    "cookie_upload_required": true,
+    "server_selectable": false,
+    "available_qualities": ["21000", "8000", "5000", "3000", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+      {
+
+        "dash":  true,
+        "hls7":  true
+
+      }
+
+  },
+
+  "vsm":
+
+  {
+
+    "name": "VS Media IPTV+",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "tv.vsm.sh",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "eon":
+
+  {
+
+    "name": "E.ON TV",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "www.eon-highspeed.tv",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "swb":
+
+  {
+
+    "name": "swb TV",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "tvonline.swb-gruppe.de",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "col":
+
+  {
+
+    "name": "Net TV",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "nettv.netcologne.de",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "ewe":
+
+  {
+
+    "name": "EWE TV",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "tvonline.ewe.de",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "sal":
+
+  {
+
+    "name": "Salt.tv",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "tv.salt.ch",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "qui":
+
+  {
+
+    "name": "Quickline TV",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "mobiltv.quickline.com",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "nxt":
+
+  {
+
+    "name": "senseLAN NexTV",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "play.nextv.ch",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "mne":
+
+  {
+
+    "name": "M-net",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "tvplus.m-net.de",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "wal":
+
+  {
+
+    "name": "WALY.TV",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "player.waly.tv",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "email",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "lam":
+
+  {
+
+    "name": "MEINE WELT",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "www.meinewelt.cc",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "bbv":
+
+  {
+
+    "name": "BBV TV",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "www.bbv-tv.net",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "vtx":
+
+  {
+
+    "name": "vtx TV",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "www.vtxtv.ch",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "gla":
+
+  {
+
+    "name": "glattvision+",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "iptv.glattvision.ch",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "sak":
+
+  {
+
+    "name": "SAK TV",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "www.saktv.ch",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "qua":
+
+  {
+
+    "name": "quantum TV",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "www.quantum-tv.com",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "eir":
+
+  {
+
+    "name": "eir TV",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "tv.eir.ie",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "wam":
+
+  {
+
+    "name": "WAMBO TV",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "tv.wambo.ch",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "email",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "fgo":
+
+  {
+
+    "name": "fision go",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "tv.fisiongo.com",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "mtc":
+
+  {
+
+    "name": "monaco telecom",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "tv.monaco-telecom.mc",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "t3a":
+
+  {
+
+    "name": "Telma TV",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "live.telma.tv",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "sap":
+
+  {
+
+    "name": "sappTV",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "play.sapp.tv",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "vol":
+
+  {
+
+    "name": "visual online TV",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "tv.vo.lu",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "2go":
+
+  {
+
+    "name": "TV2GO NL",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "tv.tv-2go.nl",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "see":
+
+  {
+
+    "name": "SeeConnect",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "iptv.seeconnect.de",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "emt":
+
+  {
+
+    "name": "epic TV Malta",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "tv.epic.com.mt",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "ecy":
+
+  {
+
+    "name": "epic TV Cyprus",
+    "module": "zattoo",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "info":
+
+    {
+      "domain": "webtv.epic.com.cy",
+      "country": "XX",
+      "big_screen": false
+    },
+
+    "login_type": "username",
+    "login_required": "1",
+    "pin_required": true,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "wlm":
+
+  {
+
+    "name": "[TERMINATED] Wilmaa",
+    "module": "wilmaa",
+
+    "epg":
+
+    {
+      "module": "wlm",
+      "country": "CH"
+    },
+
+    "login_type": "email",
+    "login_required": "0",
+    "pin_required": false,
+    "server_selectable": true,
+    "available_qualities": ["8000", "5000", "4999", "3000", "2999", "1500"],
+    "dd_supported": true,
+    "anonymous_country_required": "CH",
+    "manifest_types":
+
+    {
+
+      "dash":  true,
+      "hls7":  true
+
+    }
+
+  },
+
+  "n3o":
+
+  {
+
+    "name": "[TERMINATED] nello TV",
+    "module": "netstream",
+
+    "epg":
+
+    {
+      "module": "n3o",
+      "country": "CH"
+    },
+
+    "info":
+
+    {
+      "domain": "nello.tv",
+      "login": {"type": "realms", "name": "nello"}
+    },
+
+    "login_type": "email",
+    "login_required": "1",
+    "pin_required": false,
+    "server_selectable": false,
+    "available_qualities": ["8000", "5000", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+    {
+
+      "dash":  false,
+      "hls7":  true
+
+    }
+
+  },
+
+  "sk2":
+
+  {
+
+    "name": "[DISCONTINUED] Sky CH (Web)",
+    "module": "skych",
+
+    "epg":
+
+    {
+      "module": "ztt",
+      "country": "XX"
+    },
+
+    "login_type": "email",
+    "login_required": "1",
+    "pin_required": false,
+    "server_selectable": false,
+    "available_qualities": ["21000", "8000", "5000", "3000", "1500"],
+    "dd_supported": true,
+    "manifest_types":
+
+      {
+
+        "dash":  true,
+        "hls7":  true
+
+      }
+
+  }
+}
+

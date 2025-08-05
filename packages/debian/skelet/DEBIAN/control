@@ -1,0 +1,6 @@
+Package: telerising-service
+Version: {version}
+Maintainer: Ad0lar
+Depends: bash, curl, dpkg, procps, findutils, coreutils
+Architecture: all
+Description: telerising streaming services

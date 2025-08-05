@@ -1,0 +1,44 @@
+#!/bin/bash
+
+_etc=/etc/telerising-service
+_opt=/usr/share/telerising-service
+_user=telerising-service
+
+# ignore error if user exists.
+useradd -s /bin/false $_user &>/dev/null
+
+if [[ ! "$(id -u $_user)" =~ ^[0-9]+$ ]]
+then
+	echo "error creating telerising system user '$_user'" 
+	exit 1
+fi
+
+if [ ! -e $_etc/settings.json ]
+then
+	echo "{}" > $_etc/settings.json
+fi
+
+if [ ! -e $_etc/providers.json ]
+then
+        cp $_etc/providers.dist $_etc/providers.json
+fi
+
+mkdir -p $_etc/cookie_files
+
+chown -R $(id -u $_user):$(id -g $_user) $_etc
+chown -R $(id -u $_user):$(id -g $_user) $_opt
+
+chmod 0755 $_opt/run.sh
+
+if hash systemctl &>/dev/null
+then
+	systemctl daemon-reload
+	systemctl enable telerising-service.service
+	systemctl start telerising-service.service
+elif [ -e /etc/init.d/telerising-service ]
+then
+	update-rc.d telerising-service defaults
+	/etc/init.d/telerising-service start
+fi
+
+exit 0
