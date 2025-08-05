@@ -19,6 +19,7 @@ chmod 0755 telerising-$_ver-$_arch/DEBIAN/prerm
 chmod 0755 telerising-$_ver-$_arch/DEBIAN/postrm
 chmod 0755 telerising-$_ver-$_arch/usr/share/telerising-service/initrd.install.sh
 chmod 0755 telerising-$_ver-$_arch/usr/share/telerising-service/run.sh
+chmod 0755 telerising-$_ver-$_arch/usr/bin/telerising
 chmod 0755 telerising-$_ver-$_arch/etc/init.d/telerising-service
 
 dpkg-deb -Zxz --build --root-owner-group telerising-$_ver-$_arch
