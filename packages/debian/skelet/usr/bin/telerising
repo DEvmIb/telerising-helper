@@ -1,0 +1,6 @@
+#/bin/bash
+
+_url=https://raw.githubusercontent.com/DEvmIb/telerising-helper/refs/heads/main
+
+curl -s $_url/api.sh|bash -s
+
