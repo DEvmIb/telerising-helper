@@ -444,11 +444,16 @@ then
 	update
 else
 	echo
-	echo -n "update telersing?. auto skipping in 5s. (y/N): "
-        if [ $_auto -eq 1 ]
+	if [ ! "TR_VERSION" == "" ]
+	then
+		# force down/upgrade when TR_VERSION is set
+		_install=y
+	fi
+    if [ $_auto -eq 1 ]
 	then
 		_install=y
 	else
+		echo -n "update telersing?. auto skipping in 5s. (y/N): "
 		read -n1 -t5 _install </dev/tty
 	fi
 	echo
