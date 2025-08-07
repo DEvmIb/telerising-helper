@@ -444,7 +444,7 @@ then
 	update
 else
 	echo
-	if [ ! "TR_VERSION" == "" ]
+	if [ ! "$TR_VERSION" == "" ]
 	then
 		# force down/upgrade when TR_VERSION is set
 		_install=y
@@ -457,7 +457,7 @@ else
 		read -n1 -t5 _install </dev/tty
 	fi
 	echo
-        if [ "${_install,,}" == "y" ]
+    if [ "${_install,,}" == "y" ]
 	then
 		update
 	else
