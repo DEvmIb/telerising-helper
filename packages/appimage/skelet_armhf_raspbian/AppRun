@@ -1,0 +1,10 @@
+#!/bin/sh
+
+_p=${0%AppRun}
+cd "$_p/bin"
+_v=$(cat /proc/$PPID/cmdline)
+_v=${_v%-*}
+_v=${_v##*-}
+export TR_VERSION=$_v
+echo using version: $_v
+./bash run.sh
