@@ -34,7 +34,6 @@ do
 			cp $_arch.AppImage  "$_ver/telerising-$_ver-${_arch//-/_}.AppImage"
 			git add "$_ver/telerising-$_ver-${_arch//-/_}.AppImage"
 			git commit -a -m "$_ver/telerising-$_ver-${_arch//-/_}.AppImage"
-			break
 		;;
 	esac
 done < <(curl -s https://api.github.com/repos/sunsettrack4/telerising-api/releases |jq -r '.[]|.assets|.[]|.name')
