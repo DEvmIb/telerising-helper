@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Telerising
+Exec=$_bin
+Type=Application
+Categories=Network
+Terminal=true
+Icon=telerising
