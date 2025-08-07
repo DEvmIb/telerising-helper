@@ -30,8 +30,6 @@ then
 	TR_VERSION=${TR_VERSION:1}
 fi
 
-export
-
 if [ "$1" == "-d" ] || [ "$1" == "--devices" ]
 then
 	echo "####################################################################################################"
@@ -450,8 +448,7 @@ else
 	then
 		# force down/upgrade when TR_VERSION is set
 		_install=y
-	fi
-    if [ $_auto -eq 1 ]
+	elif [ $_auto -eq 1 ]
 	then
 		_install=y
 	else
