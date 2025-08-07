@@ -1,4 +1,4 @@
-if ! hash file wget fuse3 &>/dev/null
+if ! hash file wget fusermount3 &>/dev/null
 then
 	apt -y install file wget fuse3
 fi
