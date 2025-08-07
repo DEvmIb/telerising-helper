@@ -1,6 +1,6 @@
-if ! hash file wget &>/dev/null
+if ! hash file wget fuse3 &>/dev/null
 then
-	apt -y install file wget
+	apt -y install file wget fuse3
 fi
 
 _app_image_build=https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-aarch64.AppImage
