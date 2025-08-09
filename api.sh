@@ -410,22 +410,31 @@ esac
 chmod +x bin/$_system-busybox &>/dev/null
 chmod +x bin/$_system-proot &>/dev/null
 
-if [ -e bin/$_system-busybox ]
+_busybox=$(ls /bin/busybox /usr/bin/busybox 2>/dev/null|head -n1)
+
+if [ "$_busybox" == "" ]
 then
-	if [ ! -e bin/wget ]; then ln -s $_system-busybox bin/wget; fi
-	if [ ! -e bin/find ]; then ln -s $_system-busybox bin/find; fi
-	if [ ! -e bin/hostname ]; then ln -s $_system-busybox bin/hostname; fi
-	if [ ! -e bin/unzip ]; then ln -s $_system-busybox bin/unzip; fi
-	if [ ! -e bin/kill ]; then ln -s $_system-busybox bin/kill; fi
-	if [ ! -e bin/pgrep ]; then ln -s $_system-busybox bin/pgrep; fi
-	if [ ! -e bin/su ]; then ln -s $_system-busybox bin/su; fi
-	if [ ! -e bin/addgroup ]; then ln -s $_system-busybox bin/addgroup; fi
-	if [ ! -e bin/delgroup ]; then ln -s $_system-busybox bin/delgroup; fi
-	if [ ! -e bin/adduser ]; then ln -s $_system-busybox bin/adduser; fi
-	if [ ! -e bin/deluser ]; then ln -s $_system-busybox bin/deluser; fi
-	if [ ! -e bin/id ]; then ln -s $_system-busybox bin/id; fi
-	if [ ! -e bin/chown ]; then ln -s $_system-busybox bin/chown; fi
+	if [ -e bin/$_system-busybox ]
+	then
+		_busybox=bin/$_system-busybox
+	fi
 fi
+
+
+if [ ! -e bin/wget ]; then ln -s $_busybox bin/wget; fi
+if [ ! -e bin/find ]; then ln -s $_busybox bin/find; fi
+if [ ! -e bin/hostname ]; then ln -s $_busybox bin/hostname; fi
+if [ ! -e bin/unzip ]; then ln -s $_busybox bin/unzip; fi
+if [ ! -e bin/kill ]; then ln -s $_busybox bin/kill; fi
+if [ ! -e bin/pgrep ]; then ln -s $_busybox bin/pgrep; fi
+if [ ! -e bin/su ]; then ln -s $_busybox bin/su; fi
+if [ ! -e bin/addgroup ]; then ln -s $_busybox bin/addgroup; fi
+if [ ! -e bin/delgroup ]; then ln -s $_busybox bin/delgroup; fi
+if [ ! -e bin/adduser ]; then ln -s $_busybox bin/adduser; fi
+if [ ! -e bin/deluser ]; then ln -s $_busybox bin/deluser; fi
+if [ ! -e bin/id ]; then ln -s $_busybox bin/id; fi
+if [ ! -e bin/chown ]; then ln -s $_busybox bin/chown; fi
+
 # package systems removed busybox
 
 # is there anybody out there?
